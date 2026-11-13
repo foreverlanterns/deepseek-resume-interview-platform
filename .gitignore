@@ -1,0 +1,67 @@
+# ===== 参考源码：只读，不纳入本项目版本库 =====
+reference/
+
+# ===== 密钥与本地环境 =====
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+dist/
+build/
+
+# ===== Node =====
+node_modules/
+.node_modules-backup/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/coverage/
+*.local
+.vite/
+.eslintcache
+*.tsbuildinfo
+
+# ===== 运行时数据 =====
+backend/var/
+var/
+uploads/
+*.log
+logs/
+
+# ===== IDE / OS =====
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 临时文件 =====
+*.tmp
+*.bak
+~$*
+
+# ===== 本地代理记忆 =====
+.workbuddy/
