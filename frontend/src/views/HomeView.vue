@@ -34,8 +34,8 @@ const stages: Stage[] = [
   { title: '工程骨架', detail: '配置系统、PostgreSQL 连接、Alembic、健康检查、前端基座', state: 'done' },
   { title: '用户与认证', detail: '注册登录、JWT、受保护路由、用户级数据隔离', state: 'done' },
   {
-    title: '简历上传与解析',
-    detail: 'PDF/DOCX 上传、文件校验、文本提取、用户隔离；字段校正与 OCR 后续',
+    title: '简历解析与结构化',
+    detail: 'PDF/DOCX 文本提取已完成；DeepSeek 结构化抽取、人工校正与版本正在接入',
     state: 'current',
   },
   { title: '四维诊断', detail: '规则评分、模型语义证据、事实约束修改示例', state: 'todo' },
@@ -83,11 +83,11 @@ function openDocs(): void {
   <div class="home">
     <section class="hero">
       <div class="hero-copy">
-        <el-tag effect="plain" round class="stage-tag">阶段 3a · 简历上传</el-tag>
+        <el-tag effect="plain" round class="stage-tag">阶段 3b · 结构化抽取</el-tag>
         <h1>把简历从“投出去”<br />变成“有证据地投出去”</h1>
         <p class="hero-desc">
           结构化解析 → 四维诊断 → 事实约束改写 → 简历驱动面试 → 同口径成长对比。
-          当前已完成账号体系与简历上传提取，接下来进入字段校正与四维诊断。
+          当前已完成上传与文本提取，正在接入结构化抽取与人工校正。
         </p>
         <div class="hero-actions">
           <el-button type="primary" size="large" @click="goResumes">进入我的简历</el-button>

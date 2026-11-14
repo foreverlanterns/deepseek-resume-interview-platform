@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, type UploadFile, type UploadInstance } from 'element-plus'
 
 import { fetchResume } from '@/api/resumes'
@@ -10,6 +11,7 @@ const ALLOWED_EXTENSIONS = ['.pdf', '.docx']
 const MAX_SIZE = 10 * 1024 * 1024
 
 const store = useResumeStore()
+const router = useRouter()
 const uploadRef = ref<UploadInstance>()
 const selectedFile = ref<File | null>(null)
 const detailVisible = ref(false)
@@ -140,6 +142,10 @@ function refresh(): void {
   void store.load(true)
 }
 
+function openWorkspace(resumeId: string): void {
+  void router.push({ name: 'resume-workspace', params: { id: resumeId } })
+}
+
 onMounted(() => {
   void store.load(true)
 })
@@ -232,9 +238,10 @@ onMounted(() => {
         <el-table-column label="上传时间" width="180">
           <template #default="{ row }">{{ formatDate(row.created_at) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="140" fixed="right">
+        <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button link type="primary" @click="openDetail(row.id)">预览</el-button>
+            <el-button link type="primary" @click="openWorkspace(row.id)">结构化</el-button>
             <el-button link type="danger" @click="removeResume(row.id, row.original_filename)">
               删除
             </el-button>

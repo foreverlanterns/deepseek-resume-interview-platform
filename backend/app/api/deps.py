@@ -12,6 +12,8 @@ from app.core.config import Settings
 from app.core.security import InvalidTokenError, decode_access_token
 from app.db.session import get_db
 from app.models.user import User
+from app.providers.base import JsonCompletionProvider
+from app.providers.deepseek import DeepSeekProvider
 
 DbSession = Annotated[AsyncSession, Depends(get_db)]
 
@@ -22,6 +24,13 @@ def get_app_settings(request: Request) -> Settings:
 
 
 AppSettings = Annotated[Settings, Depends(get_app_settings)]
+
+
+def get_json_provider(settings: AppSettings) -> JsonCompletionProvider:
+    return DeepSeekProvider(settings)
+
+
+JsonProviderDep = Annotated[JsonCompletionProvider, Depends(get_json_provider)]
 
 bearer_scheme = HTTPBearer(auto_error=False)
 

@@ -6,6 +6,13 @@
 from __future__ import annotations
 
 from app.models.resume import Resume, ResumeStatus
+from app.models.resume_version import ResumeVersion, ResumeVersionStatus
 from app.models.user import User
 
-__all__ = ["Resume", "ResumeStatus", "User"]
+__all__ = [
+    "Resume",
+    "ResumeStatus",
+    "ResumeVersion",
+    "ResumeVersionStatus",
+    "User",
+]
