@@ -56,6 +56,7 @@ onMounted(() => {
         <nav class="nav">
           <router-link v-if="isAuthenticated" to="/" class="nav-link">工作台</router-link>
           <router-link v-if="isAuthenticated" to="/resumes" class="nav-link">简历</router-link>
+          <router-link v-if="isAuthenticated" to="/jds" class="nav-link">岗位</router-link>
         </nav>
 
         <div v-if="isAuthenticated" class="user-menu">
@@ -85,7 +86,7 @@ onMounted(() => {
     </main>
 
     <footer class="app-footer">
-      <span>毕业设计 · 阶段 3b 结构化抽取</span>
+      <span>毕业设计 · 阶段 4 四维诊断</span>
       <span>FastAPI · Vue 3 · TypeScript · PostgreSQL 17</span>
     </footer>
   </div>

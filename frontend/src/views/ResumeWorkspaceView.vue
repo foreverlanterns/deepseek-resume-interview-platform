@@ -255,6 +255,10 @@ function goBack(): void {
   void router.push({ name: 'resumes' })
 }
 
+function goDiagnosis(): void {
+  void router.push({ name: 'diagnosis', params: { id: resumeId.value } })
+}
+
 onMounted(() => {
   void load()
 })
@@ -274,14 +278,19 @@ onMounted(() => {
           <span>{{ formatDate(resume.created_at) }}</span>
         </div>
       </div>
-      <el-button
-        type="primary"
-        :loading="store.parsing"
-        :disabled="!canParse"
-        @click="runParse"
-      >
-        {{ store.versions.length ? '重新解析' : '用 DeepSeek 解析' }}
-      </el-button>
+      <div class="head-actions">
+        <el-button v-if="hasData" type="primary" plain @click="goDiagnosis">
+          开始诊断
+        </el-button>
+        <el-button
+          type="primary"
+          :loading="store.parsing"
+          :disabled="!canParse"
+          @click="runParse"
+        >
+          {{ store.versions.length ? '重新解析' : '用 DeepSeek 解析' }}
+        </el-button>
+      </div>
     </header>
 
     <el-alert
@@ -698,6 +707,12 @@ onMounted(() => {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
+}
+
+.head-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .head-main h1 {

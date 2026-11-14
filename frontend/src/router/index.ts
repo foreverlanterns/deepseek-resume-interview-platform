@@ -22,6 +22,18 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '简历结构化', requiresAuth: true },
   },
   {
+    path: '/resumes/:id/diagnose',
+    name: 'diagnosis',
+    component: () => import('@/views/DiagnosisView.vue'),
+    meta: { title: '四维诊断', requiresAuth: true },
+  },
+  {
+    path: '/jds',
+    name: 'jds',
+    component: () => import('@/views/JdsView.vue'),
+    meta: { title: '岗位描述', requiresAuth: true },
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/views/AuthView.vue'),

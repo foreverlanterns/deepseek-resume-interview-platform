@@ -11,6 +11,7 @@
 - 阶段 2：用户注册 / 登录已完成。Argon2 密码哈希、JWT、`/auth/me`、前端登录注册页与路由守卫均已跑通；数据库已建库并执行迁移。
 - 阶段 3a：简历上传与文本提取已完成。支持 PDF/DOCX 校验、UUID 隔离存储、PyMuPDF / python-docx 文本提取、用户级列表与删除；图片与 OCR 留待后续阶段。
 - 阶段 3b：结构化抽取与人工校正已完成。DeepSeek `deepseek-flash` Provider（JSON mode、thinking disabled、重试）、`resume_versions` 版本表、解析/校正接口、前端分区编辑页；真实 API 调用待配置 Key 后整体联调。
+- 阶段 4：JD 管理与四维诊断已完成。JD CRUD、格式/完整度/关键词规则评分、DeepSeek JD 匹配证据、事实约束修改示例、ECharts 雷达图与诊断历史；真实诊断质量待联调。
 - 代码按功能模块逐个推进，**进度、验收结果与待确认事项统一记录在 [`docs/开发同步记录.md`](docs/开发同步记录.md)**。
 
 ## 目录
@@ -57,7 +58,8 @@ python -m venv .venv
 - 认证接口：`POST /api/v1/auth/register`、`POST /api/v1/auth/login`、`GET /api/v1/auth/me`
 - 简历接口：`POST /api/v1/resumes/upload`、`GET /api/v1/resumes`、`GET /api/v1/resumes/{id}`、`DELETE /api/v1/resumes/{id}`
 - 结构化接口：`POST /api/v1/resumes/{id}/parse`、`GET /api/v1/resumes/{id}/versions`、`POST /api/v1/resumes/{id}/versions/{version_no}/corrections`
-- 使用结构化解析前，需要在 `backend/.env` 配置 `DEEPSEEK_API_KEY`；模型默认 `deepseek-flash`
+- JD 与诊断：`GET/POST /api/v1/jds`、`PUT/DELETE /api/v1/jds/{id}`、`POST /api/v1/diagnoses`、`GET /api/v1/diagnoses`、`GET /api/v1/diagnoses/{id}`
+- 使用结构化解析或诊断前，需要在 `backend/.env` 配置 `DEEPSEEK_API_KEY`；模型默认 `deepseek-flash`
 
 ### 2. 前端
 
@@ -67,7 +69,7 @@ npm install
 npm run dev
 ```
 
-访问 <http://localhost:5173>，未登录会自动进入登录页；注册入口为 <http://localhost:5173/auth?mode=register>，登录后可在“我的简历”上传 PDF/DOCX，并在简历列表点击“结构化”进入字段校正页。开发服务器已将 `/api` 代理到 `http://127.0.0.1:8000`。
+访问 <http://localhost:5173>，未登录会自动进入登录页；注册入口为 <http://localhost:5173/auth?mode=register>，登录后可在“我的简历”上传 PDF/DOCX，并在简历列表点击“结构化”进入字段校正页，再点击“开始诊断”生成四维报告；目标岗位在“岗位”页维护。开发服务器已将 `/api` 代理到 `http://127.0.0.1:8000`。
 
 ### 3. 测试与构建
 
