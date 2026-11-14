@@ -41,10 +41,13 @@ const stages: Stage[] = [
   {
     title: '四维诊断',
     detail: 'JD 管理、格式/完整度/关键词/JD 匹配规则评分、修改示例',
+    state: 'done',
+  },
+  {
+    title: '模拟面试',
+    detail: '简历与岗位驱动出题、逐题五维评价、两级追问、复盘报告',
     state: 'current',
   },
-  { title: '四维诊断', detail: '规则评分、模型语义证据、事实约束修改示例', state: 'todo' },
-  { title: '模拟面试', detail: '简历与 JD 驱动出题、逐题评价、两级追问、报告', state: 'todo' },
   { title: '历史成长', detail: '同岗位、同 rubric_version 的趋势与弱项对比', state: 'todo' },
 ]
 
@@ -88,11 +91,11 @@ function openDocs(): void {
   <div class="home">
     <section class="hero">
       <div class="hero-copy">
-        <el-tag effect="plain" round class="stage-tag">阶段 4 · 四维诊断</el-tag>
+        <el-tag effect="plain" round class="stage-tag">阶段 5 · 模拟面试</el-tag>
         <h1>把简历从“投出去”<br />变成“有证据地投出去”</h1>
         <p class="hero-desc">
           结构化解析 → 四维诊断 → 事实约束改写 → 简历驱动面试 → 同口径成长对比。
-          当前正在接入 JD 管理、四维规则评分与修改示例。
+          当前已完成出题、作答评价、两级追问与复盘报告，真实模型质量待整体联调。
         </p>
         <div class="hero-actions">
           <el-button type="primary" size="large" @click="goResumes">进入我的简历</el-button>

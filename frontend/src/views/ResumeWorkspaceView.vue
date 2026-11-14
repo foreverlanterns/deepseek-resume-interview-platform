@@ -259,6 +259,10 @@ function goDiagnosis(): void {
   void router.push({ name: 'diagnosis', params: { id: resumeId.value } })
 }
 
+function goInterview(): void {
+  void router.push({ name: 'interviews', query: { resume_id: resumeId.value } })
+}
+
 onMounted(() => {
   void load()
 })
@@ -282,6 +286,7 @@ onMounted(() => {
         <el-button v-if="hasData" type="primary" plain @click="goDiagnosis">
           开始诊断
         </el-button>
+        <el-button v-if="hasData" plain @click="goInterview">模拟面试</el-button>
         <el-button
           type="primary"
           :loading="store.parsing"

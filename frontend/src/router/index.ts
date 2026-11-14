@@ -34,6 +34,18 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '岗位描述', requiresAuth: true },
   },
   {
+    path: '/interviews',
+    name: 'interviews',
+    component: () => import('@/views/InterviewsView.vue'),
+    meta: { title: '模拟面试', requiresAuth: true },
+  },
+  {
+    path: '/interviews/:id',
+    name: 'interview-room',
+    component: () => import('@/views/InterviewRoomView.vue'),
+    meta: { title: '面试间', requiresAuth: true },
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/views/AuthView.vue'),
