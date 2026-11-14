@@ -2,6 +2,8 @@
 
 毕业设计课题：**基于DeepSeek的智能简历诊断与面试模拟平台设计与实现**。
 
+代码仓库：<https://github.com/foreverlanterns/deepseek-resume-interview-platform>
+
 ## 当前状态
 
 - 阶段 0：需求分析、项目计划书、开题报告已完成。
