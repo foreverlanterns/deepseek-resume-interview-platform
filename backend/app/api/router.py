@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.api.routes import (
+    analytics,
     auth,
     diagnoses,
     health,
@@ -22,3 +23,4 @@ api_router.include_router(resume_versions.router)
 api_router.include_router(jds.router)
 api_router.include_router(diagnoses.router)
 api_router.include_router(interviews.router)
+api_router.include_router(analytics.router)

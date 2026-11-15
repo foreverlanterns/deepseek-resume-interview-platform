@@ -13,6 +13,7 @@
 - 阶段 3b：结构化抽取与人工校正已完成。DeepSeek `deepseek-flash` Provider（JSON mode、thinking disabled、重试）、`resume_versions` 版本表、解析/校正接口、前端分区编辑页；真实 API 调用待配置 Key 后整体联调。
 - 阶段 4：JD 管理与四维诊断已完成。JD CRUD、格式/完整度/关键词规则评分、DeepSeek JD 匹配证据、事实约束修改示例、ECharts 雷达图与诊断历史；真实诊断质量待联调。
 - 阶段 5：模拟面试已完成。简历与岗位驱动出题、题目来源核实、五维逐题评价、两级追问、提前结束、复盘报告与面试历史；真实出题/评价质量待联调。
+- 阶段 6：成长分析已完成。按简历、岗位、面试类型与 `rubric_version` 分组聚合诊断与面试趋势，输出平均/最高/首末变化、缺失关键词、未满足要求与五维弱项。
 - 代码按功能模块逐个推进，**进度、验收结果与待确认事项统一记录在 [`docs/开发同步记录.md`](docs/开发同步记录.md)**。
 
 ## 目录
@@ -61,6 +62,7 @@ python -m venv .venv
 - 结构化接口：`POST /api/v1/resumes/{id}/parse`、`GET /api/v1/resumes/{id}/versions`、`POST /api/v1/resumes/{id}/versions/{version_no}/corrections`
 - JD 与诊断：`GET/POST /api/v1/jds`、`PUT/DELETE /api/v1/jds/{id}`、`POST /api/v1/diagnoses`、`GET /api/v1/diagnoses`、`GET /api/v1/diagnoses/{id}`
 - 模拟面试：`POST/GET /api/v1/interviews`、`GET /api/v1/interviews/{id}`、`POST /api/v1/interviews/{id}/questions/{question_id}/answer`、`POST /api/v1/interviews/{id}/finish`、`POST /api/v1/interviews/{id}/report`
+- 成长分析：`GET /api/v1/analytics/overview`、`GET /api/v1/analytics/diagnoses`、`GET /api/v1/analytics/interviews`、`GET /api/v1/analytics/weaknesses`
 - 使用结构化解析、诊断或模拟面试前，需要在 `backend/.env` 配置 `DEEPSEEK_API_KEY`；模型默认 `deepseek-flash`
 
 ### 2. 前端
@@ -71,7 +73,7 @@ npm install
 npm run dev
 ```
 
-访问 <http://localhost:5173>，未登录会自动进入登录页；注册入口为 <http://localhost:5173/auth?mode=register>，登录后可在“我的简历”上传 PDF/DOCX，并在简历列表点击“结构化”进入字段校正页，再点击“开始诊断”生成四维报告，或点击“模拟面试”开始逐题训练；目标岗位在“岗位”页维护。开发服务器已将 `/api` 代理到 `http://127.0.0.1:8000`。
+访问 <http://localhost:5173>，未登录会自动进入登录页；注册入口为 <http://localhost:5173/auth?mode=register>，登录后可在“我的简历”上传 PDF/DOCX，并在简历列表点击“结构化”进入字段校正页，再点击“开始诊断”生成四维报告，或点击“模拟面试”开始逐题训练；目标岗位在“岗位”页维护，“成长”页查看同口径趋势与弱项。开发服务器已将 `/api` 代理到 `http://127.0.0.1:8000`。
 
 ### 3. 测试与构建
 

@@ -46,9 +46,13 @@ const stages: Stage[] = [
   {
     title: '模拟面试',
     detail: '简历与岗位驱动出题、逐题五维评价、两级追问、复盘报告',
+    state: 'done',
+  },
+  {
+    title: '历史成长',
+    detail: '同简历、同岗位、同 rubric_version 的趋势与弱项聚合',
     state: 'current',
   },
-  { title: '历史成长', detail: '同岗位、同 rubric_version 的趋势与弱项对比', state: 'todo' },
 ]
 
 const statusText = computed(() => {
@@ -91,11 +95,11 @@ function openDocs(): void {
   <div class="home">
     <section class="hero">
       <div class="hero-copy">
-        <el-tag effect="plain" round class="stage-tag">阶段 5 · 模拟面试</el-tag>
+        <el-tag effect="plain" round class="stage-tag">阶段 6 · 成长分析</el-tag>
         <h1>把简历从“投出去”<br />变成“有证据地投出去”</h1>
         <p class="hero-desc">
           结构化解析 → 四维诊断 → 事实约束改写 → 简历驱动面试 → 同口径成长对比。
-          当前已完成出题、作答评价、两级追问与复盘报告，真实模型质量待整体联调。
+          当前已打通诊断与面试的趋势、弱项聚合，接下来进入部署与答辩材料。
         </p>
         <div class="hero-actions">
           <el-button type="primary" size="large" @click="goResumes">进入我的简历</el-button>

@@ -46,6 +46,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '面试间', requiresAuth: true },
   },
   {
+    path: '/growth',
+    name: 'growth',
+    component: () => import('@/views/GrowthView.vue'),
+    meta: { title: '成长分析', requiresAuth: true },
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/views/AuthView.vue'),

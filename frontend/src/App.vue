@@ -58,6 +58,7 @@ onMounted(() => {
           <router-link v-if="isAuthenticated" to="/resumes" class="nav-link">简历</router-link>
           <router-link v-if="isAuthenticated" to="/jds" class="nav-link">岗位</router-link>
           <router-link v-if="isAuthenticated" to="/interviews" class="nav-link">面试</router-link>
+          <router-link v-if="isAuthenticated" to="/growth" class="nav-link">成长</router-link>
         </nav>
 
         <div v-if="isAuthenticated" class="user-menu">
@@ -87,7 +88,7 @@ onMounted(() => {
     </main>
 
     <footer class="app-footer">
-      <span>毕业设计 · 阶段 5 模拟面试</span>
+      <span>毕业设计 · 阶段 6 成长分析</span>
       <span>FastAPI · Vue 3 · TypeScript · PostgreSQL 17</span>
     </footer>
   </div>
