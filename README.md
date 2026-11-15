@@ -14,6 +14,7 @@
 - 阶段 4：JD 管理与四维诊断已完成。JD CRUD、格式/完整度/关键词规则评分、DeepSeek JD 匹配证据、事实约束修改示例、ECharts 雷达图与诊断历史；真实诊断质量待联调。
 - 阶段 5：模拟面试已完成。简历与岗位驱动出题、题目来源核实、五维逐题评价、两级追问、提前结束、复盘报告与面试历史；真实出题/评价质量待联调。
 - 阶段 6：成长分析已完成。按简历、岗位、面试类型与 `rubric_version` 分组聚合诊断与面试趋势，输出平均/最高/首末变化、缺失关键词、未满足要求与五维弱项。
+- 阶段 7：容器化部署与测试报告已完成配置。Dockerfile、Compose、Nginx、部署说明与测试报告已落地；实机构建待 Docker 引擎可用后验证。
 - 代码按功能模块逐个推进，**进度、验收结果与待确认事项统一记录在 [`docs/开发同步记录.md`](docs/开发同步记录.md)**。
 
 ## 目录
@@ -82,6 +83,16 @@ cd backend && .venv/Scripts/python.exe -m pytest
 cd frontend && npm run test && npm run build
 ```
 
+## 容器部署
+
+```bash
+cp .env.docker.example .env.docker
+# 填写 DB_PASSWORD 与 SECRET_KEY（至少 32 位随机字符串）
+docker compose --env-file .env.docker up -d --build
+```
+
+访问 <http://localhost:8080>。数据库迁移在 api 容器启动时自动执行；详细步骤、备份恢复与排查见 [`docs/部署说明.md`](docs/部署说明.md)。
+
 ## 技术栈
 
 - 前端：Vue 3 + TypeScript + Vite + Element Plus + Pinia + ECharts。
@@ -107,5 +118,7 @@ cd frontend && npm run test && npm run build
 - `docs/智能简历诊断与面试模拟平台_项目计划书.docx`
 - `docs/智能简历诊断与面试模拟平台_开题报告.docx`
 - `docs/开发同步记录.md`
+- `docs/部署说明.md`
+- `docs/测试报告.md`
 
 文档内学生信息、学院和指导教师为待填写项，需按学校模板替换封面。
