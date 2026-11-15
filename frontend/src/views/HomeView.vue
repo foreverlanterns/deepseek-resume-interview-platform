@@ -51,6 +51,11 @@ const stages: Stage[] = [
   {
     title: '历史成长',
     detail: '同简历、同岗位、同 rubric_version 的趋势与弱项聚合',
+    state: 'done',
+  },
+  {
+    title: '部署与答辩材料',
+    detail: 'Docker Compose + Nginx、测试报告、演示脚本与论文材料',
     state: 'current',
   },
 ]
@@ -95,11 +100,11 @@ function openDocs(): void {
   <div class="home">
     <section class="hero">
       <div class="hero-copy">
-        <el-tag effect="plain" round class="stage-tag">阶段 6 · 成长分析</el-tag>
+        <el-tag effect="plain" round class="stage-tag">阶段 7 · 容器部署</el-tag>
         <h1>把简历从“投出去”<br />变成“有证据地投出去”</h1>
         <p class="hero-desc">
           结构化解析 → 四维诊断 → 事实约束改写 → 简历驱动面试 → 同口径成长对比。
-          当前已打通诊断与面试的趋势、弱项聚合，接下来进入部署与答辩材料。
+          系统已完成容器化部署与实机验证，接下来补齐演示脚本与论文材料。
         </p>
         <div class="hero-actions">
           <el-button type="primary" size="large" @click="goResumes">进入我的简历</el-button>

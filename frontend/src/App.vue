@@ -88,7 +88,7 @@ onMounted(() => {
     </main>
 
     <footer class="app-footer">
-      <span>毕业设计 · 阶段 6 成长分析</span>
+      <span>毕业设计 · 阶段 7 容器部署</span>
       <span>FastAPI · Vue 3 · TypeScript · PostgreSQL 17</span>
     </footer>
   </div>

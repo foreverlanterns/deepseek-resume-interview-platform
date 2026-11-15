@@ -109,7 +109,7 @@ async function submit(): Promise<void> {
 <template>
   <div class="auth-page">
     <section class="brand-panel">
-      <el-tag effect="plain" round class="stage-tag">阶段 2 · 账号体系</el-tag>
+      <el-tag effect="plain" round class="stage-tag">账号体系 · JWT 认证</el-tag>
       <h1>先建立身份，<br />再开始诊断。</h1>
       <p class="brand-desc">
         简历、诊断报告和面试记录都会绑定到你的账号。换设备登录，历史记录仍然在。
