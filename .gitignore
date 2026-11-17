@@ -38,6 +38,7 @@ node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/dist-ssr/
+frontend/.vitest-tmp/
 frontend/coverage/
 *.local
 .vite/

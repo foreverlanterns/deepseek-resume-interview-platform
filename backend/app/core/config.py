@@ -66,7 +66,7 @@ class Settings(BaseSettings):
     deepseek_api_key: SecretStr = SecretStr("")
     deepseek_base_url: str = "https://api.deepseek.com"
     deepseek_model: str = "deepseek-flash"
-    deepseek_timeout_seconds: float = Field(default=60.0, gt=0, le=300)
+    deepseek_timeout_seconds: float = Field(default=120.0, gt=0, le=300)
     deepseek_max_retries: int = Field(default=2, ge=0, le=5)
     deepseek_max_output_tokens: int = Field(default=8192, ge=256, le=65536)
 

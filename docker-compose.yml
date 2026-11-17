@@ -37,8 +37,9 @@ services:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-resume_app}:${DB_PASSWORD}@db:5432/${POSTGRES_DB:-resume_platform}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
       DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-flash}
-      DEEPSEEK_TIMEOUT_SECONDS: ${DEEPSEEK_TIMEOUT_SECONDS:-60}
+      DEEPSEEK_TIMEOUT_SECONDS: ${DEEPSEEK_TIMEOUT_SECONDS:-120}
       UPLOAD_DIR: /app/var/uploads
       MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-10}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}

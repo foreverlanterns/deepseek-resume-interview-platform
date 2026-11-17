@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#7c3aed"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef4ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="70" y="62" font-size="34" font-weight="700" fill="#0f172a">智能简历诊断与面试模拟平台 · 总体架构</text>
+  <text x="70" y="98" font-size="16" fill="#64748b">Vue 3 前端 · FastAPI 后端 · PostgreSQL 17 · DeepSeek 兼容模型服务 · Docker Compose 部署</text>
+
+  <!-- Compose boundary -->
+  <rect x="330" y="165" width="1030" height="640" rx="26" fill="#ffffff" fill-opacity="0.55" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="9 7"/>
+  <text x="356" y="200" font-size="15" font-weight="600" fill="#64748b">Docker Compose 部署边界</text>
+
+  <!-- Browser -->
+  <rect x="62" y="300" width="230" height="300" rx="18" fill="#ffffff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <rect x="62" y="300" width="230" height="56" rx="18" fill="#eff6ff"/>
+  <rect x="62" y="338" width="230" height="18" fill="#eff6ff"/>
+  <text x="86" y="336" font-size="18" font-weight="700" fill="#1e3a8a">浏览器</text>
+  <text x="86" y="390" font-size="14" fill="#334155">Vue 3 + TypeScript</text>
+  <text x="86" y="416" font-size="14" fill="#334155">Element Plus / Pinia</text>
+  <text x="86" y="442" font-size="14" fill="#334155">ECharts 图表</text>
+  <text x="86" y="482" font-size="12.5" fill="#64748b">登录态：JWT Bearer</text>
+  <text x="86" y="504" font-size="12.5" fill="#64748b">路由守卫 + 401 失效处理</text>
+  <text x="86" y="548" font-size="12.5" fill="#94a3b8">http://localhost:8080</text>
+
+  <!-- Nginx -->
+  <rect x="374" y="320" width="230" height="260" rx="18" fill="#ffffff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <rect x="374" y="320" width="230" height="54" rx="18" fill="#ecfdf5"/>
+  <rect x="374" y="356" width="230" height="18" fill="#ecfdf5"/>
+  <text x="398" y="356" font-size="18" font-weight="700" fill="#065f46">web · Nginx</text>
+  <text x="398" y="408" font-size="14" fill="#334155">静态资源托管</text>
+  <text x="398" y="434" font-size="14" fill="#334155">SPA history fallback</text>
+  <text x="398" y="460" font-size="14" fill="#334155">/api/ 反向代理</text>
+  <text x="398" y="486" font-size="14" fill="#334155">gzip · 缓存 · 安全头</text>
+  <text x="398" y="526" font-size="12.5" fill="#64748b">client_max_body_size 12m</text>
+
+  <!-- API -->
+  <rect x="674" y="232" width="300" height="440" rx="18" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.6" filter="url(#shadow)"/>
+  <rect x="674" y="232" width="300" height="64" rx="18" fill="#eff6ff"/>
+  <rect x="674" y="278" width="300" height="18" fill="#eff6ff"/>
+  <text x="698" y="268" font-size="18" font-weight="700" fill="#1e3a8a">api · FastAPI</text>
+  <text x="698" y="288" font-size="12.5" fill="#3b82f6">/api/v1 · Pydantic v2 · SQLAlchemy 2</text>
+
+  <g font-size="13.5" fill="#1e293b">
+    <rect x="698" y="316" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="730" y="341">认证</text>
+    <rect x="830" y="316" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="850" y="341">简历与版本</text>
+    <rect x="698" y="366" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="730" y="391">岗位 JD</text>
+    <rect x="830" y="366" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="850" y="391">四维诊断</text>
+    <rect x="698" y="416" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="730" y="441">模拟面试</text>
+    <rect x="830" y="416" width="120" height="40" rx="10" fill="#f1f5f9"/><text x="850" y="441">成长分析</text>
+  </g>
+
+  <line x1="698" y1="486" x2="950" y2="486" stroke="#e2e8f0"/>
+  <text x="698" y="514" font-size="12.5" fill="#475569">启动流程：等待 DB → Alembic 迁移 → Uvicorn</text>
+  <text x="698" y="538" font-size="12.5" fill="#475569">非 root 用户运行；环境变量注入密钥</text>
+  <text x="698" y="562" font-size="12.5" fill="#475569">统一错误：401 / 404 / 409 / 502 / 503</text>
+  <text x="698" y="604" font-size="12" fill="#94a3b8">密码 Argon2 · JWT HS256 · 用户级数据隔离</text>
+  <text x="698" y="628" font-size="12" fill="#94a3b8">事实护栏：原文摘录校验 · 新增数字降级</text>
+
+  <!-- PostgreSQL -->
+  <rect x="1058" y="248" width="270" height="250" rx="18" fill="#ffffff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <rect x="1058" y="248" width="270" height="54" rx="18" fill="#f5f3ff"/>
+  <rect x="1058" y="284" width="270" height="18" fill="#f5f3ff"/>
+  <text x="1082" y="284" font-size="18" font-weight="700" fill="#5b21b6">PostgreSQL 17</text>
+  <text x="1082" y="330" font-size="13.5" fill="#334155">users · resumes</text>
+  <text x="1082" y="356" font-size="13.5" fill="#334155">resume_versions</text>
+  <text x="1082" y="382" font-size="13.5" fill="#334155">job_descriptions</text>
+  <text x="1082" y="408" font-size="13.5" fill="#334155">diagnoses</text>
+  <text x="1082" y="434" font-size="13.5" fill="#334155">interviews · interview_questions</text>
+  <text x="1082" y="470" font-size="12" fill="#94a3b8">命名卷 pgdata · 迁移 head fec760ceb4bb</text>
+
+  <!-- Uploads -->
+  <rect x="1058" y="536" width="270" height="120" rx="18" fill="#ffffff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <rect x="1058" y="536" width="270" height="48" rx="18" fill="#fffbeb"/>
+  <rect x="1058" y="566" width="270" height="18" fill="#fffbeb"/>
+  <text x="1082" y="568" font-size="17" font-weight="700" fill="#92400e">uploads 命名卷</text>
+  <text x="1082" y="608" font-size="12.5" fill="#475569">/app/var/uploads</text>
+  <text x="1082" y="632" font-size="12.5" fill="#64748b">原始 PDF/DOCX，按用户与简历隔离</text>
+
+  <!-- LLM -->
+  <rect x="720" y="62" width="430" height="100" rx="18" fill="#ffffff" stroke="#ddd6fe" filter="url(#shadow)"/>
+  <rect x="720" y="62" width="430" height="100" rx="18" fill="#faf5ff" fill-opacity="0.7"/>
+  <text x="746" y="98" font-size="17" font-weight="700" fill="#5b21b6">DeepSeek 兼容模型服务</text>
+  <text x="746" y="124" font-size="12.5" fill="#475569">deepseek-v4.1-flash-1017 · JSON mode · 重试</text>
+  <text x="746" y="146" font-size="12" fill="#7c3aed">结构化抽取 · JD 匹配 · 五维评价 · 复盘报告</text>
+
+  <!-- Arrows -->
+  <line x1="292" y1="450" x2="368" y2="450" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arrowBlue)"/>
+  <text x="300" y="438" font-size="11.5" fill="#2563eb">HTTP 8080</text>
+
+  <line x1="604" y1="450" x2="668" y2="450" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arrowBlue)"/>
+  <text x="606" y="438" font-size="11.5" fill="#2563eb">/api/v1</text>
+
+  <line x1="974" y1="360" x2="1052" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="986" y="348" font-size="11.5" fill="#475569">asyncpg</text>
+
+  <line x1="974" y1="590" x2="1052" y2="590" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="986" y="578" font-size="11.5" fill="#475569">文件读写</text>
+
+  <line x1="824" y1="232" x2="824" y2="168" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#arrowPurple)"/>
+  <text x="836" y="206" font-size="11.5" fill="#7c3aed">HTTPS · JSON</text>
+
+  <!-- Numbered flows -->
+  <g font-size="12" font-weight="700" fill="#ffffff">
+    <circle cx="330" cy="480" r="11" fill="#2563eb"/><text x="326" y="484">1</text>
+    <circle cx="636" cy="480" r="11" fill="#2563eb"/><text x="632" y="484">2</text>
+    <circle cx="1012" cy="392" r="11" fill="#475569"/><text x="1008" y="396">3</text>
+    <circle cx="1012" cy="620" r="11" fill="#475569"/><text x="1008" y="624">4</text>
+    <circle cx="794" cy="200" r="11" fill="#7c3aed"/><text x="790" y="204">5</text>
+  </g>
+
+  <!-- Footnotes -->
+  <text x="70" y="842" font-size="12.5" fill="#64748b">① 浏览器只访问 web；② Nginx 转发 /api；③ 业务数据写 PostgreSQL；④ 原始文件写命名卷；⑤ 仅服务端调用模型，密钥不进入前端。</text>
+  <text x="70" y="866" font-size="12" fill="#94a3b8">API 与数据库不映射宿主机端口；生产环境强制 DEBUG=false、SECRET_KEY ≥ 32 位。</text>
+</svg>

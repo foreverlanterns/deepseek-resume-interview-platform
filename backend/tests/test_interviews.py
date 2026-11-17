@@ -449,6 +449,7 @@ async def test_finish_and_generate_report(
     )
     assert finished.status_code == 200
     assert finished.json()["status"] == "completed"
+    assert finished.json()["current_question_id"] is None
     assert finished.json()["report"] is None
 
     report = await ai_client.post(

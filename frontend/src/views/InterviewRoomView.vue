@@ -249,7 +249,7 @@ onMounted(() => {
         </p>
       </el-card>
 
-      <el-card v-if="currentQuestion" class="current-card" shadow="never">
+      <el-card v-if="currentQuestion && detail.status !== 'completed'" class="current-card" shadow="never">
         <div class="current-head">
           <div class="current-tags">
             <el-tag size="small" :type="sourceMeta(currentQuestion.source).type" effect="light">

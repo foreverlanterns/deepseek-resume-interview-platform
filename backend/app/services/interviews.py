@@ -628,7 +628,11 @@ def to_detail(row: InterviewRow, questions: list[InterviewQuestion]) -> Intervie
     interview = row.interview
     summary = to_summary(row)
     answered = [item for item in questions if item.answer]
-    current = next((item for item in questions if item.answer is None), None)
+    current = (
+        next((item for item in questions if item.answer is None), None)
+        if interview.status != "completed"
+        else None
+    )
     dimension_scores = (
         {key: float(value) for key, value in interview.dimension_scores.items()}
         if interview.dimension_scores

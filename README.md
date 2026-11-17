@@ -10,11 +10,11 @@
 - 阶段 1：工程骨架已完成。后端具备 FastAPI 应用工厂、环境变量配置、PostgreSQL 连接、Alembic、健康检查与测试；前端具备 Vue 3 + TypeScript + Vite、路由、Pinia、Element Plus 与 Axios 请求封装。
 - 阶段 2：用户注册 / 登录已完成。Argon2 密码哈希、JWT、`/auth/me`、前端登录注册页与路由守卫均已跑通；数据库已建库并执行迁移。
 - 阶段 3a：简历上传与文本提取已完成。支持 PDF/DOCX 校验、UUID 隔离存储、PyMuPDF / python-docx 文本提取、用户级列表与删除；图片与 OCR 留待后续阶段。
-- 阶段 3b：结构化抽取与人工校正已完成。DeepSeek `deepseek-flash` Provider（JSON mode、thinking disabled、重试）、`resume_versions` 版本表、解析/校正接口、前端分区编辑页；真实 API 调用待配置 Key 后整体联调。
-- 阶段 4：JD 管理与四维诊断已完成。JD CRUD、格式/完整度/关键词规则评分、DeepSeek JD 匹配证据、事实约束修改示例、ECharts 雷达图与诊断历史；真实诊断质量待联调。
-- 阶段 5：模拟面试已完成。简历与岗位驱动出题、题目来源核实、五维逐题评价、两级追问、提前结束、复盘报告与面试历史；真实出题/评价质量待联调。
+- 阶段 3b：结构化抽取与人工校正已完成。DeepSeek Provider（JSON mode、thinking disabled、重试）、`resume_versions` 版本表、解析/校正接口、前端分区编辑页；真实 API 解析与校正已验证。
+- 阶段 4：JD 管理与四维诊断已完成。JD CRUD、格式/完整度/关键词规则评分、DeepSeek JD 匹配证据、事实约束修改示例、ECharts 雷达图与诊断历史；真实诊断链路已跑通。
+- 阶段 5：模拟面试已完成。简历与岗位驱动出题、题目来源核实、五维逐题评价、两级追问、提前结束、复盘报告与面试历史；真实面试链路已跑通。
 - 阶段 6：成长分析已完成。按简历、岗位、面试类型与 `rubric_version` 分组聚合诊断与面试趋势，输出平均/最高/首末变化、缺失关键词、未满足要求与五维弱项。
-- 阶段 7：容器化部署已完成并实机验证。`db` / `api` / `web` 三容器健康，迁移、上传卷与经 Nginx 的注册/上传链路通过；部署说明与测试报告已落地，演示材料待补充。
+- 阶段 7：容器化部署已完成并实机验证。`db` / `api` / `web` 三容器健康，迁移、上传卷与经 Nginx 的注册/上传链路通过；部署说明、测试报告、架构图、演示脚本与关键页面截图已完成。
 - 代码按功能模块逐个推进，**进度、验收结果与待确认事项统一记录在 [`docs/开发同步记录.md`](docs/开发同步记录.md)**。
 
 ## 目录
@@ -120,5 +120,8 @@ docker compose --env-file .env.docker up -d --build
 - `docs/开发同步记录.md`
 - `docs/部署说明.md`
 - `docs/测试报告.md`
+- `docs/架构说明.md`
+- `docs/演示脚本.md`
+- `docs/assets/architecture.png`
 
 文档内学生信息、学院和指导教师为待填写项，需按学校模板替换封面。
