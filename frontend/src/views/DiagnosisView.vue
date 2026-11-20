@@ -280,6 +280,7 @@ onMounted(() => {
           </div>
 
           <DiagnosisRadar
+            class="radar-panel"
             :scores="{
               format: current.format_score,
               completeness: current.completeness_score,
@@ -592,6 +593,10 @@ onMounted(() => {
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 22px;
   align-items: center;
+}
+
+.radar-panel {
+  grid-column: 1 / -1;
 }
 
 .total-panel {

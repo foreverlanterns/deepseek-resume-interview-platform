@@ -15,6 +15,7 @@
 | `07-jd-card.png` | 岗位卡片 | 必备/加分/关键词标签与“去诊断简历” |
 | `08-structured-diff.png` | 结构化页 | 简介修改预览，新增句子加粗 |
 | `09-diagnosis-picker.png` | 岗位页 | “选择要诊断的简历”弹窗 |
+| `10-diagnosis-result.png` | 诊断页 | 74.7 分结果、四维雷达与 1 条历史 |
 
 ## 参考图
 
