@@ -155,7 +155,6 @@ onMounted(() => {
   <div class="resumes-page">
     <header class="page-head">
       <div>
-        <el-tag effect="plain" round class="stage-tag">阶段 3a · 简历上传</el-tag>
         <h1>我的简历</h1>
         <p>
           上传 PDF 或 DOCX，系统会保存原文件并提取文本。后续诊断、修改示例和面试都会基于这份文本。
@@ -198,7 +197,7 @@ onMounted(() => {
         >
           上传并提取文本
         </el-button>
-        <span class="upload-note">图片简历与 OCR 将在后续阶段支持</span>
+        <span class="upload-note">暂不支持图片型简历，请上传 PDF 或 Word 文件</span>
       </div>
     </el-card>
 
@@ -273,7 +272,7 @@ onMounted(() => {
             class="detail-alert"
           />
           <pre class="text-preview">{{ detail.text_preview || '未提取到文本内容' }}</pre>
-          <p class="preview-note">仅展示前 800 字；字段级校正将在下一阶段提供。</p>
+          <p class="preview-note">仅展示前 800 字；完整内容与字段校正请进入“结构化”。</p>
         </template>
       </div>
     </el-drawer>
@@ -292,13 +291,6 @@ onMounted(() => {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-}
-
-.stage-tag {
-  margin-bottom: 12px;
-  color: var(--app-primary);
-  border-color: #bfdbfe;
-  background: #eff6ff;
 }
 
 .page-head h1 {

@@ -145,7 +145,6 @@ onMounted(() => {
 <template>
   <div v-loading="pageLoading" class="interviews-page">
     <header class="page-head">
-      <el-tag effect="plain" round class="stage-tag">阶段 5 · 模拟面试</el-tag>
       <h1>模拟面试</h1>
       <p>
         由简历与目标岗位驱动出题，逐题给出五维评价，并支持最多两级追问；结束后生成复盘报告。
@@ -356,12 +355,6 @@ onMounted(() => {
   font-size: 12.5px;
   line-height: 1.8;
   color: var(--app-muted);
-}
-
-.stage-tag {
-  color: var(--app-primary);
-  border-color: #bfdbfe;
-  background: #eff6ff;
 }
 
 .control-card,

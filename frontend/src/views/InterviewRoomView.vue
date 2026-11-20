@@ -241,7 +241,7 @@ onMounted(() => {
               总分 <b :class="scoreLevel(detail.total_score)">{{ detail.total_score.toFixed(1) }}</b>
             </span>
           </div>
-          <small>{{ detail.rubric_version }} · {{ detail.model_name || '未记录模型' }}</small>
+          <small>{{ TYPE_LABELS[detail.interview_type] }}</small>
         </div>
         <el-progress :percentage="progress" :stroke-width="8" :show-text="false" />
         <p class="progress-note">

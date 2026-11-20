@@ -109,7 +109,7 @@ async function submit(): Promise<void> {
 <template>
   <div class="auth-page">
     <section class="brand-panel">
-      <el-tag effect="plain" round class="stage-tag">账号体系 · JWT 认证</el-tag>
+      <el-tag effect="plain" round class="eyebrow">账号与数据安全</el-tag>
       <h1>先建立身份，<br />再开始诊断。</h1>
       <p class="brand-desc">
         简历、诊断报告和面试记录都会绑定到你的账号。换设备登录，历史记录仍然在。
@@ -117,15 +117,15 @@ async function submit(): Promise<void> {
       <ul class="benefits">
         <li>
           <span class="bullet"></span>
-          <span>JWT 登录，受保护接口按用户隔离</span>
+          <span>账号之间的数据完全隔离</span>
         </li>
         <li>
           <span class="bullet"></span>
-          <span>密码使用 Argon2 哈希，不保存明文</span>
+          <span>密码加密存储，不保存明文</span>
         </li>
         <li>
           <span class="bullet"></span>
-          <span>后续简历版本、诊断与面试记录统一归档</span>
+          <span>换设备登录，简历与记录仍然在</span>
         </li>
       </ul>
       <p class="brand-foot">基于 DeepSeek 的智能简历诊断与面试模拟平台</p>
@@ -223,7 +223,7 @@ async function submit(): Promise<void> {
   padding: 12px 0;
 }
 
-.stage-tag {
+.eyebrow {
   margin-bottom: 20px;
   color: var(--app-primary);
   border-color: #bfdbfe;

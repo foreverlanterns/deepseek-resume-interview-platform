@@ -139,7 +139,6 @@ onMounted(() => {
   <div class="jds-page">
     <header class="page-head">
       <div>
-        <el-tag effect="plain" round class="stage-tag">阶段 4 · 岗位描述</el-tag>
         <h1>岗位描述</h1>
         <p>
           维护目标岗位的技能、关键词与任职资格。诊断时用这些要求与简历逐条对齐；
@@ -242,7 +241,7 @@ onMounted(() => {
           </el-form-item>
         </div>
 
-        <el-form-item label="JD 原文">
+        <el-form-item label="岗位原文">
           <el-input
             v-model="form.raw_text"
             type="textarea"
@@ -292,13 +291,6 @@ onMounted(() => {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-}
-
-.stage-tag {
-  margin-bottom: 12px;
-  color: var(--app-primary);
-  border-color: #bfdbfe;
-  background: #eff6ff;
 }
 
 .page-head h1 {

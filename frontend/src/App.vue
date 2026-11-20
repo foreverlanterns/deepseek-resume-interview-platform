@@ -15,9 +15,9 @@ const { isAuthenticated, displayName } = storeToRefs(auth)
 
 const statusText = computed(() => {
   if (loading.value) return '正在检测'
-  if (error.value) return '后端未连接'
+  if (error.value) return '服务暂不可用'
   if (!health.value) return '等待检测'
-  return health.value.database === 'ok' ? '服务正常' : '数据库未就绪'
+  return health.value.database === 'ok' ? '服务正常' : '服务维护中'
 })
 
 const statusClass = computed(() => {
@@ -88,8 +88,8 @@ onMounted(() => {
     </main>
 
     <footer class="app-footer">
-      <span>毕业设计 · 阶段 7 容器部署</span>
-      <span>FastAPI · Vue 3 · TypeScript · PostgreSQL 17</span>
+      <span>© 2026 智能简历诊断与面试模拟平台</span>
+      <span>数据仅你可见 · AI 建议仅供参考</span>
     </footer>
   </div>
 </template>

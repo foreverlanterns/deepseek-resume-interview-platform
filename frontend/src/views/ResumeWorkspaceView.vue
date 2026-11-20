@@ -326,7 +326,7 @@ onMounted(() => {
             {{ versionLabel(version.status) }}
           </el-tag>
           <span class="version-meta">
-            {{ version.model_name || '手动校正' }} · {{ formatDate(version.created_at) }}
+            {{ formatDate(version.created_at) }}
           </span>
         </button>
         <el-empty
@@ -351,8 +351,7 @@ onMounted(() => {
             <div>
               <strong>v{{ current?.version_no }}</strong>
               <span class="toolbar-meta">
-                {{ current?.model_name || '手动校正' }} ·
-                {{ current?.parser_version || 'manual' }}
+{{ current?.status === 'corrected' ? '人工校正' : '模型解析' }}
               </span>
             </div>
             <el-button type="primary" :loading="store.saving" @click="saveCorrection">

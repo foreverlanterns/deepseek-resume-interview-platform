@@ -34,7 +34,7 @@ function render(): void {
         { name: '格式', max: 100 },
         { name: '完整度', max: 100 },
         { name: '关键词', max: 100 },
-        { name: 'JD 匹配', max: 100 },
+        { name: '岗位匹配', max: 100 },
       ],
       radius: '64%',
       splitNumber: 4,

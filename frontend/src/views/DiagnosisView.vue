@@ -39,7 +39,7 @@ const DIMENSION_LABELS: Record<DimensionKey, string> = {
   format: '格式规范',
   completeness: '内容完整',
   keyword: '关键词',
-  jd_match: 'JD 匹配',
+  jd_match: '岗位匹配',
 }
 
 const VERDICT_META: Record<
@@ -168,7 +168,6 @@ onMounted(() => {
     <header class="page-head">
       <div>
         <el-button link type="primary" @click="goWorkspace">← 返回结构化编辑</el-button>
-        <el-tag effect="plain" round class="stage-tag">阶段 4 · 四维诊断</el-tag>
         <h1>四维诊断</h1>
         <p v-if="resume">{{ resume.original_filename }} · {{ resume.text_length }} 字</p>
       </div>
@@ -231,7 +230,7 @@ onMounted(() => {
         </el-button>
       </div>
       <p class="control-note">
-        权重固定：格式 15% · 完整度 20% · 关键词 25% · JD 匹配 40%。规则负责算分，DeepSeek 只提供语义证据与修改示例。
+        四个维度综合评分，每条结论都附简历原文证据与可执行的修改示例。
       </p>
     </el-card>
 
@@ -244,10 +243,7 @@ onMounted(() => {
               <small>/ 100</small>
             </div>
             <p class="summary-text">{{ current.summary }}</p>
-            <p class="overview-meta">
-              {{ current.rubric_version }} · {{ current.model_name || '规则 + 模型' }} ·
-              {{ formatDate(current.created_at) }}
-            </p>
+            <p class="overview-meta">生成于 {{ formatDate(current.created_at) }}</p>
           </div>
 
           <div class="score-panel">
@@ -267,7 +263,7 @@ onMounted(() => {
               <small>权重 25%</small>
             </div>
             <div class="score-card">
-              <span>JD 匹配</span>
+              <span>岗位匹配</span>
               <strong :class="scoreLevel(current.jd_match_score)">{{ current.jd_match_score }}</strong>
               <small>权重 40%</small>
             </div>
@@ -375,7 +371,7 @@ onMounted(() => {
             </div>
           </el-tab-pane>
 
-          <el-tab-pane :label="`JD 匹配 ${current.jd_match_details.score}`">
+          <el-tab-pane :label="`岗位匹配 ${current.jd_match_details.score}`">
             <el-table :data="current.jd_match_details.matches" size="small">
               <el-table-column prop="requirement" label="岗位要求" min-width="150" />
               <el-table-column label="类型" width="80">
@@ -514,13 +510,6 @@ onMounted(() => {
   margin: 0;
   font-size: 12px;
   color: var(--app-muted);
-}
-
-.stage-tag {
-  margin-left: 10px;
-  color: var(--app-primary);
-  border-color: #bfdbfe;
-  background: #eff6ff;
 }
 
 .control-card,

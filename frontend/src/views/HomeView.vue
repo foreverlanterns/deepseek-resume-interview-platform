@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-
-import { useAppStore } from '@/stores/app'
 
 interface Dimension {
   key: string
@@ -13,86 +9,89 @@ interface Dimension {
   color: string
 }
 
-interface Stage {
+interface Step {
   title: string
   detail: string
-  state: 'done' | 'current' | 'todo'
 }
 
-const app = useAppStore()
+interface Benefit {
+  title: string
+  detail: string
+}
+
 const router = useRouter()
-const { health, loading, error } = storeToRefs(app)
 
 const dimensions: Dimension[] = [
-  { key: 'format', name: '格式规范性', weight: 15, hint: '文本可解析、板块标题、日期一致性', color: '#60a5fa' },
-  { key: 'completeness', name: '内容完整度', weight: 20, hint: '教育、工作、项目、技能与成果表达', color: '#34d399' },
-  { key: 'keywords', name: '关键词优化', weight: 25, hint: 'JD 关键词覆盖、同义词归一、技能层级', color: '#fbbf24' },
-  { key: 'jd_match', name: 'JD 匹配度', weight: 40, hint: '硬性要求、经验相关性、项目证据', color: '#2563eb' },
-]
-
-const stages: Stage[] = [
-  { title: '工程骨架', detail: '配置系统、PostgreSQL 连接、Alembic、健康检查、前端基座', state: 'done' },
-  { title: '用户与认证', detail: '注册登录、JWT、受保护路由、用户级数据隔离', state: 'done' },
   {
-    title: '简历解析与结构化',
-    detail: 'PDF/DOCX 文本提取、DeepSeek 结构化抽取、人工校正与版本管理',
-    state: 'done',
+    key: 'format',
+    name: '格式规范性',
+    weight: 15,
+    hint: '文本可解析、板块标题清晰、时间线一致',
+    color: '#60a5fa',
   },
   {
-    title: '四维诊断',
-    detail: 'JD 管理、格式/完整度/关键词/JD 匹配规则评分、修改示例',
-    state: 'done',
+    key: 'completeness',
+    name: '内容完整度',
+    weight: 20,
+    hint: '教育、工作、项目、技能与成果表达完整',
+    color: '#34d399',
   },
   {
-    title: '模拟面试',
-    detail: '简历与岗位驱动出题、逐题五维评价、两级追问、复盘报告',
-    state: 'done',
+    key: 'keywords',
+    name: '关键词匹配',
+    weight: 25,
+    hint: '目标岗位关键词覆盖、同义词归一、技能层级',
+    color: '#fbbf24',
   },
   {
-    title: '历史成长',
-    detail: '同简历、同岗位、同 rubric_version 的趋势与弱项聚合',
-    state: 'done',
-  },
-  {
-    title: '部署与答辩材料',
-    detail: 'Docker Compose + Nginx、测试报告、演示脚本与论文材料',
-    state: 'current',
+    key: 'jd_match',
+    name: '岗位匹配度',
+    weight: 40,
+    hint: '硬性要求、经验相关性、项目证据',
+    color: '#2563eb',
   },
 ]
 
-const statusText = computed(() => {
-  if (loading.value) return '检测中'
-  if (error.value) return '后端未连接'
-  if (!health.value) return '待检测'
-  return health.value.database === 'ok' ? '服务正常' : '数据库未就绪'
-})
+const steps: Step[] = [
+  {
+    title: '上传简历',
+    detail: '支持 PDF 与 Word，自动提取文本并整理成教育、工作、项目、技能等字段。',
+  },
+  {
+    title: '选择目标岗位',
+    detail: '填写岗位的技能、关键词与任职要求，诊断会逐条对照你的简历。',
+  },
+  {
+    title: '诊断与面试',
+    detail: '查看四维评分和改写建议，再用模拟面试检验表达，记录每次进步。',
+  },
+]
 
-const statusType = computed<'success' | 'warning' | 'danger' | 'info'>(() => {
-  if (loading.value) return 'info'
-  if (error.value) return 'danger'
-  if (health.value?.database === 'ok') return 'success'
-  if (health.value) return 'warning'
-  return 'info'
-})
-
-function formatDate(value?: string): string {
-  if (!value) return '—'
-  const date = new Date(value)
-  return Number.isNaN(date.getTime())
-    ? value
-    : date.toLocaleString('zh-CN', { hour12: false })
-}
-
-function refresh(): void {
-  void app.checkHealth()
-}
+const benefits: Benefit[] = [
+  {
+    title: '看得懂的四维评分',
+    detail: '格式、完整度、关键词与岗位匹配分别打分，每一项都附简历原文依据。',
+  },
+  {
+    title: '不改事实的改写建议',
+    detail: '每条建议给出原文、问题、改写示例和理由，不会替你编造经历或数据。',
+  },
+  {
+    title: '接近真实的模拟面试',
+    detail: '根据简历与岗位出题，逐题评价并追问，结束后生成复盘报告。',
+  },
+  {
+    title: '可比较的成长记录',
+    detail: '同一份简历、同一个岗位下的诊断与面试趋势放在一起看，定位重复出现的弱项。',
+  },
+]
 
 function goResumes(): void {
   void router.push({ name: 'resumes' })
 }
 
-function openDocs(): void {
-  window.open('http://127.0.0.1:8000/docs', '_blank', 'noopener,noreferrer')
+function goInterviews(): void {
+  void router.push({ name: 'interviews' })
 }
 </script>
 
@@ -100,23 +99,22 @@ function openDocs(): void {
   <div class="home">
     <section class="hero">
       <div class="hero-copy">
-        <el-tag effect="plain" round class="stage-tag">阶段 7 · 容器部署</el-tag>
+        <el-tag effect="plain" round class="eyebrow">AI 简历诊断 · 面试训练</el-tag>
         <h1>把简历从“投出去”<br />变成“有证据地投出去”</h1>
         <p class="hero-desc">
-          结构化解析 → 四维诊断 → 事实约束改写 → 简历驱动面试 → 同口径成长对比。
-          系统已完成容器化部署与实机验证，接下来补齐演示脚本与论文材料。
+          上传简历，选择目标岗位，获得四维诊断与可执行的改写建议；
+          再用一场模拟面试检验表达，把每次进步记录下来。
         </p>
         <div class="hero-actions">
-          <el-button type="primary" size="large" @click="goResumes">进入我的简历</el-button>
-          <el-button size="large" :loading="loading" @click="refresh">检测后端服务</el-button>
-          <el-button size="large" @click="openDocs">打开 API 文档</el-button>
+          <el-button type="primary" size="large" @click="goResumes">开始诊断</el-button>
+          <el-button size="large" @click="goInterviews">开始模拟面试</el-button>
         </div>
       </div>
 
       <div class="hero-panel">
         <div class="panel-head">
-          <span>四维诊断权重</span>
-          <span class="panel-badge">100 分制</span>
+          <span>诊断看什么</span>
+          <span class="panel-badge">四维综合评分</span>
         </div>
         <div v-for="dimension in dimensions" :key="dimension.key" class="dimension">
           <div class="dimension-meta">
@@ -131,69 +129,55 @@ function openDocs(): void {
           />
           <p>{{ dimension.hint }}</p>
         </div>
-        <p class="panel-note">规则算分，模型只提供语义判断与证据，总分由程序合成。</p>
+        <p class="panel-note">每个维度都会给出得分依据，改写建议只基于简历原文。</p>
       </div>
     </section>
 
     <section class="workspace">
-      <el-card shadow="never" class="panel-card health-card">
+      <el-card shadow="never" class="panel-card">
         <template #header>
           <div class="card-head">
-            <span>运行状态</span>
-            <el-tag :type="statusType" effect="light" size="small">{{ statusText }}</el-tag>
+            <span>三步开始</span>
+            <span class="subtle">从上传到复盘</span>
           </div>
         </template>
 
-        <el-alert
-          v-if="error"
-          :title="error"
-          type="error"
-          :closable="false"
-          show-icon
-          class="health-alert"
-        />
-
-        <el-descriptions :column="2" border size="small">
-          <el-descriptions-item label="后端服务">
-            {{ health ? '已连接' : '未连接' }}
-          </el-descriptions-item>
-          <el-descriptions-item label="数据库">
-            {{ health?.database === 'ok' ? 'PostgreSQL 正常' : '未就绪' }}
-          </el-descriptions-item>
-          <el-descriptions-item label="版本">{{ health?.version ?? '—' }}</el-descriptions-item>
-          <el-descriptions-item label="环境">{{ health?.environment ?? '—' }}</el-descriptions-item>
-          <el-descriptions-item label="接口前缀">/api/v1</el-descriptions-item>
-          <el-descriptions-item label="检查时间">
-            {{ formatDate(health?.checked_at) }}
-          </el-descriptions-item>
-        </el-descriptions>
-
-        <p v-if="health?.database_error" class="db-error">{{ health.database_error }}</p>
-        <p class="hint">
-          数据库不可用时后端返回 degraded 而不是崩溃；填入真实密码后，健康检查会自动恢复。
-        </p>
-      </el-card>
-
-      <el-card shadow="never" class="panel-card roadmap-card">
-        <template #header>
-          <div class="card-head">
-            <span>开发路线</span>
-            <span class="subtle">一次只推进一个模块</span>
-          </div>
-        </template>
-
-        <ol class="timeline">
-          <li v-for="stage in stages" :key="stage.title" :class="`stage-${stage.state}`">
-            <span class="timeline-dot"></span>
-            <div class="timeline-body">
-              <div class="timeline-title">
-                {{ stage.title }}
-                <el-tag v-if="stage.state === 'current'" size="small" effect="plain">当前</el-tag>
-              </div>
-              <p>{{ stage.detail }}</p>
+        <ol class="steps">
+          <li v-for="(step, index) in steps" :key="step.title">
+            <span class="step-index">{{ index + 1 }}</span>
+            <div class="step-body">
+              <strong>{{ step.title }}</strong>
+              <p>{{ step.detail }}</p>
             </div>
           </li>
         </ol>
+
+        <div class="card-foot">
+          <el-button type="primary" plain @click="goResumes">上传第一份简历</el-button>
+        </div>
+      </el-card>
+
+      <el-card shadow="never" class="panel-card">
+        <template #header>
+          <div class="card-head">
+            <span>你会得到</span>
+            <span class="subtle">每一步都有依据</span>
+          </div>
+        </template>
+
+        <ul class="benefits">
+          <li v-for="item in benefits" :key="item.title">
+            <span class="benefit-mark"></span>
+            <div>
+              <strong>{{ item.title }}</strong>
+              <p>{{ item.detail }}</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="card-foot">
+          <el-button link type="primary" @click="goInterviews">去看看面试怎么练 →</el-button>
+        </div>
       </el-card>
     </section>
   </div>
@@ -212,7 +196,7 @@ function openDocs(): void {
   padding: 12px 0;
 }
 
-.stage-tag {
+.eyebrow {
   margin-bottom: 18px;
   color: var(--app-primary);
   border-color: #bfdbfe;
@@ -229,7 +213,7 @@ function openDocs(): void {
 
 .hero-desc {
   margin: 0 0 26px;
-  max-width: 520px;
+  max-width: 540px;
   font-size: 15px;
   line-height: 1.85;
   color: var(--app-muted);
@@ -309,6 +293,14 @@ function openDocs(): void {
 .panel-card {
   border-radius: 16px;
   border-color: var(--app-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-card :deep(.el-card__body) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .card-head {
@@ -327,100 +319,88 @@ function openDocs(): void {
   color: var(--app-muted);
 }
 
-.health-alert {
-  margin-bottom: 14px;
-}
-
-.db-error {
-  margin: 14px 0 0;
-  padding: 10px 12px;
-  border-radius: 9px;
-  background: #fef2f2;
-  color: #b91c1c;
-  font-size: 12px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  word-break: break-all;
-}
-
-.hint {
-  margin: 14px 0 0;
-  font-size: 11.5px;
-  line-height: 1.7;
-  color: var(--app-muted);
-}
-
-.timeline {
+.steps {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.timeline li {
-  position: relative;
   display: flex;
-  gap: 12px;
-  padding-bottom: 16px;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.timeline li:last-child {
-  padding-bottom: 0;
+.steps li {
+  display: flex;
+  gap: 14px;
 }
 
-.timeline li::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 14px;
-  bottom: 0;
-  width: 1px;
-  background: var(--app-border);
-}
-
-.timeline li:last-child::before {
-  display: none;
-}
-
-.timeline-dot {
-  width: 9px;
-  height: 9px;
-  margin-top: 5px;
-  border-radius: 50%;
-  background: #cbd5e1;
+.step-index {
   flex: none;
-  z-index: 1;
-}
-
-.stage-current .timeline-dot {
-  background: var(--app-primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
-}
-
-.stage-done .timeline-dot {
-  background: #16a34a;
-}
-
-.stage-done .timeline-title {
-  color: #334155;
-}
-
-.timeline-title {
-  display: flex;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   font-size: 13px;
   font-weight: 600;
+  color: var(--app-primary);
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+
+.step-body strong {
+  display: block;
+  font-size: 13.5px;
   color: var(--app-text);
 }
 
-.timeline-body p {
+.step-body p {
   margin: 5px 0 0;
-  font-size: 11.5px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.65;
   color: var(--app-muted);
 }
 
-.stage-todo .timeline-title {
-  color: #475569;
+.benefits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.benefits li {
+  display: flex;
+  gap: 12px;
+}
+
+.benefit-mark {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+}
+
+.benefits strong {
+  display: block;
+  font-size: 13px;
+  color: var(--app-text);
+}
+
+.benefits p {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--app-muted);
+}
+
+.card-foot {
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 @media (max-width: 900px) {

@@ -60,7 +60,7 @@ const diagnosisSeries = computed(() => {
     },
     { name: '关键词', data: group.points.map((point) => point.keyword_score), color: '#fbbf24' },
     {
-      name: 'JD 匹配',
+      name: '岗位匹配',
       data: group.points.map((point) => point.jd_match_score),
       color: '#8b5cf6',
     },
@@ -200,11 +200,10 @@ onMounted(() => {
 <template>
   <div v-loading="pageLoading" class="growth-page">
     <header class="page-head">
-      <el-tag effect="plain" round class="stage-tag">阶段 6 · 成长分析</el-tag>
       <h1>成长分析</h1>
       <p>
-        按简历、岗位与评分口径聚合历史诊断和面试，查看分数趋势与重复出现的弱项。不同
-        `rubric_version` 不会混在同一组里比较。
+        按简历与岗位聚合历史诊断和面试，查看分数趋势与重复出现的弱项。
+        只有同一份简历、同一个岗位的记录才会放在一起比较。
       </p>
     </header>
 
@@ -224,7 +223,7 @@ onMounted(() => {
         </label>
         <el-button :loading="store.loading" @click="load">刷新数据</el-button>
         <span class="filter-note">
-          趋势只在同简历 + 同岗位 + 同 `rubric_version` 下比较；面试还要求同面试类型。
+          趋势只在同一份简历、同一个岗位下比较；面试还要求同一种面试类型。
         </span>
       </div>
     </el-card>
@@ -265,7 +264,7 @@ onMounted(() => {
           <div class="card-title">
             <span>诊断趋势</span>
             <small v-if="store.diagnosisGroups.length">
-              {{ store.diagnosisGroups.length }} 组口径
+              {{ store.diagnosisGroups.length }} 组记录
             </small>
           </div>
           <div class="card-actions">
@@ -279,7 +278,7 @@ onMounted(() => {
                 v-for="(group, index) in store.diagnosisGroups"
                 :key="`${group.jd_id}-${group.rubric_version}`"
                 :value="index"
-                :label="`${group.jd_title} · ${group.rubric_version}`"
+                :label="`${group.jd_title} · ${group.points.length} 次记录`"
               />
             </el-select>
             <el-button v-if="selectedDiagnosis" link type="primary" @click="goDiagnosis">
@@ -293,7 +292,6 @@ onMounted(() => {
         <div class="group-meta">
           <span>{{ selectedDiagnosis.resume_filename }}</span>
           <span>{{ selectedDiagnosis.jd_title }}</span>
-          <span>{{ selectedDiagnosis.rubric_version }}</span>
           <span>{{ selectedDiagnosis.points.length }} 次记录</span>
         </div>
 
@@ -331,7 +329,7 @@ onMounted(() => {
           <el-table-column prop="format_score" label="格式" width="70" />
           <el-table-column prop="completeness_score" label="完整度" width="80" />
           <el-table-column prop="keyword_score" label="关键词" width="80" />
-          <el-table-column prop="jd_match_score" label="JD 匹配" width="90" />
+          <el-table-column prop="jd_match_score" label="岗位匹配" width="90" />
         </el-table>
       </template>
 
@@ -346,7 +344,7 @@ onMounted(() => {
           <div class="card-title">
             <span>面试趋势</span>
             <small v-if="store.interviewGroups.length">
-              {{ store.interviewGroups.length }} 组口径
+              {{ store.interviewGroups.length }} 组记录
             </small>
           </div>
           <div class="card-actions">
@@ -373,7 +371,6 @@ onMounted(() => {
           <span>{{ selectedInterview.resume_filename }}</span>
           <span>{{ selectedInterview.jd_title || '未指定岗位' }}</span>
           <span>{{ TYPE_LABELS[selectedInterview.interview_type as InterviewType] || selectedInterview.interview_type }}</span>
-          <span>{{ selectedInterview.rubric_version }}</span>
           <span>{{ selectedInterview.points.length }} 场</span>
         </div>
 
@@ -540,12 +537,6 @@ onMounted(() => {
   font-size: 12.5px;
   line-height: 1.8;
   color: var(--app-muted);
-}
-
-.stage-tag {
-  color: var(--app-primary);
-  border-color: #bfdbfe;
-  background: #eff6ff;
 }
 
 .filter-card,
