@@ -143,6 +143,10 @@ function refresh(): void {
   void store.load(true)
 }
 
+function goDiagnosis(resumeId: string): void {
+  void router.push({ name: 'diagnosis', params: { id: resumeId } })
+}
+
 function openWorkspace(resumeId: string): void {
   void router.push({ name: 'resume-workspace', params: { id: resumeId } })
 }
@@ -241,10 +245,18 @@ onMounted(() => {
         <el-table-column label="上传时间" width="180">
           <template #default="{ row }">{{ formatDate(row.created_at) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" width="240" fixed="right">
           <template #default="{ row }">
             <el-button link type="primary" @click="openDetail(row.id)">预览</el-button>
             <el-button link type="primary" @click="openWorkspace(row.id)">结构化</el-button>
+            <el-button
+              v-if="row.status === 'extracted'"
+              link
+              type="primary"
+              @click="goDiagnosis(row.id)"
+            >
+              诊断
+            </el-button>
             <el-button link type="danger" @click="removeResume(row.id, row.original_filename)">
               删除
             </el-button>

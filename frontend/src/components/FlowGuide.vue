@@ -5,13 +5,13 @@ type FlowStep = 'resume' | 'structure' | 'jd' | 'diagnosis' | 'interview' | 'gro
 
 const props = defineProps<{ current: FlowStep }>()
 
-const steps: Array<{ key: FlowStep; label: string }> = [
-  { key: 'resume', label: '上传简历' },
+const steps: Array<{ key: FlowStep; label: string; to?: string }> = [
+  { key: 'resume', label: '上传简历', to: '/resumes' },
   { key: 'structure', label: '确认信息' },
-  { key: 'jd', label: '填写岗位' },
+  { key: 'jd', label: '填写岗位', to: '/jds' },
   { key: 'diagnosis', label: '四维诊断' },
   { key: 'interview', label: '模拟面试' },
-  { key: 'growth', label: '成长复盘' },
+  { key: 'growth', label: '成长复盘', to: '/growth' },
 ]
 
 const currentIndex = computed(() => Math.max(0, steps.findIndex((step) => step.key === props.current)))
@@ -27,8 +27,14 @@ const currentIndex = computed(() => Math.max(0, steps.findIndex((step) => step.k
         :class="{ current: index === currentIndex }"
         :aria-current="index === currentIndex ? 'step' : undefined"
       >
-        <span class="flow-dot">{{ index + 1 }}</span>
-        <span class="flow-label">{{ step.label }}</span>
+        <router-link v-if="step.to" :to="step.to" class="flow-link">
+          <span class="flow-dot">{{ index + 1 }}</span>
+          <span class="flow-label">{{ step.label }}</span>
+        </router-link>
+        <span v-else class="flow-link static">
+          <span class="flow-dot">{{ index + 1 }}</span>
+          <span class="flow-label">{{ step.label }}</span>
+        </span>
       </li>
     </ol>
   </nav>
@@ -88,6 +94,18 @@ li + li::before {
   font-size: 11px;
   background: #f1f5f9;
   color: #64748b;
+}
+
+.flow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.flow-link:not(.static):hover .flow-label {
+  color: var(--app-primary);
 }
 
 .flow-label {

@@ -6,6 +6,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import FlowGuide from '@/components/FlowGuide.vue'
 import LinesEditor from '@/components/LinesEditor.vue'
 import { fetchResume } from '@/api/resumes'
+import { useJdStore } from '@/stores/jds'
 import { useResumeVersionStore } from '@/stores/resumeVersions'
 import type { ResumeDetail } from '@/types/resume'
 import type {
@@ -21,6 +22,7 @@ import {
 const route = useRoute()
 const router = useRouter()
 const store = useResumeVersionStore()
+const jdStore = useJdStore()
 
 const resume = ref<ResumeDetail | null>(null)
 const form = ref<ParsedResumeForm>(createEmptyParsedResumeForm())
@@ -29,6 +31,40 @@ const pageLoading = ref(false)
 
 const resumeId = computed(() => String(route.params.id))
 const current = computed(() => store.current)
+const hasJd = computed(() => jdStore.items.length > 0)
+
+interface TextDiff {
+  prefix: string
+  removed: string
+  added: string
+  suffix: string
+}
+
+function buildTextDiff(base: string, next: string): TextDiff | null {
+  if (base === next) {
+    return null
+  }
+  let start = 0
+  while (start < base.length && start < next.length && base[start] === next[start]) {
+    start += 1
+  }
+  let endBase = base.length - 1
+  let endNext = next.length - 1
+  while (endBase >= start && endNext >= start && base[endBase] === next[endNext]) {
+    endBase -= 1
+    endNext -= 1
+  }
+  return {
+    prefix: next.slice(0, start),
+    removed: base.slice(start, endBase + 1),
+    added: next.slice(start, endNext + 1),
+    suffix: next.slice(endNext + 1),
+  }
+}
+
+const summaryDiff = computed(() =>
+  buildTextDiff(store.current?.effective_data?.summary ?? '', form.value.summary),
+)
 const canParse = computed(
   () => resume.value?.status === 'extracted' && (resume.value?.text_length ?? 0) > 0,
 )
@@ -87,6 +123,7 @@ async function load(): Promise<void> {
   pageLoading.value = true
   store.reset()
   try {
+    await jdStore.load().catch(() => {})
     resume.value = await fetchResume(resumeId.value)
     await store.loadVersions(resumeId.value)
     const first = store.versions[0]
@@ -119,7 +156,7 @@ async function runParse(): Promise<void> {
   if (store.versions.length) {
     try {
       await ElMessageBox.confirm(
-        '重新解析会调用 DeepSeek 并生成新版本，可能产生 API 费用。继续吗？',
+        '重新解析会生成一个新版本，原来的版本仍会保留。继续吗？',
         '重新解析',
         { type: 'warning', confirmButtonText: '继续', cancelButtonText: '取消' },
       )
@@ -256,6 +293,10 @@ function goBack(): void {
   void router.push({ name: 'resumes' })
 }
 
+function goJds(): void {
+  void router.push({ name: 'jds' })
+}
+
 function goDiagnosis(): void {
   void router.push({ name: 'diagnosis', params: { id: resumeId.value } })
 }
@@ -284,7 +325,10 @@ onMounted(() => {
         </div>
       </div>
       <div class="head-actions">
-        <el-button v-if="hasData" type="primary" plain @click="goDiagnosis">
+        <el-button v-if="hasData && !hasJd" type="primary" @click="goJds">
+          填写岗位
+        </el-button>
+        <el-button v-if="hasData && hasJd" type="primary" plain @click="goDiagnosis">
           开始诊断
         </el-button>
         <el-button v-if="hasData" plain @click="goInterview">模拟面试</el-button>
@@ -300,6 +344,18 @@ onMounted(() => {
     </header>
 
     <FlowGuide current="structure" />
+
+    <el-alert
+      v-if="hasData && !hasJd"
+      title="下一步：填写目标岗位"
+      type="info"
+      :closable="false"
+      show-icon
+      class="next-alert"
+    >
+      诊断需要对照岗位的技能、关键词和任职要求。填写后回到这里，就可以开始诊断。
+      <el-button link type="primary" @click="goJds">去填写岗位</el-button>
+    </el-alert>
 
     <el-alert
       v-if="resume && !canParse"
@@ -398,9 +454,27 @@ onMounted(() => {
               <el-input v-model="form.basic_info.headline" placeholder="例如：后端开发工程师" />
             </label>
             <label class="field">
-              <span>个人简介</span>
+              <span>
+                个人简介
+                <el-tag v-if="summaryDiff" size="small" type="warning" effect="plain">
+                  已修改
+                </el-tag>
+              </span>
               <el-input v-model="form.summary" type="textarea" :rows="3" placeholder="原文没有可留空" />
             </label>
+            <div v-if="summaryDiff" class="diff-preview">
+              <div class="diff-head">
+                <span>修改预览</span>
+                <small>保存后恢复统一格式</small>
+              </div>
+              <p>
+                <span>{{ summaryDiff.prefix }}</span>
+                <del v-if="summaryDiff.removed">{{ summaryDiff.removed }}</del>
+                <strong v-if="summaryDiff.added">{{ summaryDiff.added }}</strong>
+                <span>{{ summaryDiff.suffix }}</span>
+              </p>
+              <small class="diff-note">新增内容加粗显示，方便和原文区分。</small>
+            </div>
             <p v-if="form.basic_info.source_text" class="source-text">
               原文：{{ form.basic_info.source_text }}
             </p>
@@ -702,6 +776,60 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.next-alert {
+  border-radius: 12px;
+}
+
+.diff-preview {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed #fbbf24;
+  border-radius: 10px;
+  background: #fffbeb;
+}
+
+.diff-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.diff-head small {
+  font-size: 11px;
+  font-weight: 400;
+  color: #a16207;
+}
+
+.diff-preview p {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #475569;
+  white-space: pre-wrap;
+}
+
+.diff-preview strong {
+  padding: 0 2px;
+  font-weight: 700;
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.diff-preview del {
+  color: #94a3b8;
+}
+
+.diff-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #a16207;
+}
+
 .workspace-page {
   display: flex;
   flex-direction: column;
@@ -890,6 +1018,9 @@ onMounted(() => {
 }
 
 .field > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11.5px;
   color: var(--app-muted);
 }
