@@ -5,8 +5,10 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 import FlowGuide from '@/components/FlowGuide.vue'
 import LinesEditor from '@/components/LinesEditor.vue'
+import { fetchResumes } from '@/api/resumes'
 import { useJdStore } from '@/stores/jds'
 import type { JobDescription, JobDescriptionPayload } from '@/types/jd'
+import type { ResumeSummary } from '@/types/resume'
 
 interface JdForm {
   title: string
@@ -24,9 +26,36 @@ const router = useRouter()
 const dialogVisible = ref(false)
 const editingId = ref<string | null>(null)
 const form = reactive<JdForm>(emptyForm())
+const diagnosisDialogVisible = ref(false)
+const diagnosisLoading = ref(false)
+const diagnosisResumes = ref<ResumeSummary[]>([])
 
-function goResumes(): void {
-  void router.push({ name: 'resumes' })
+async function openDiagnosisPicker(): Promise<void> {
+  diagnosisLoading.value = true
+  try {
+    const resumes = await fetchResumes()
+    const usable = resumes.filter((item) => item.status === 'extracted')
+    if (!usable.length) {
+      ElMessage.warning('还没有可诊断的简历，请先上传并提取文本')
+      await router.push({ name: 'resumes' })
+      return
+    }
+    if (usable.length === 1) {
+      await router.push({ name: 'diagnosis', params: { id: usable[0].id } })
+      return
+    }
+    diagnosisResumes.value = usable
+    diagnosisDialogVisible.value = true
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '简历列表加载失败')
+  } finally {
+    diagnosisLoading.value = false
+  }
+}
+
+function goDiagnosis(resumeId: string): void {
+  diagnosisDialogVisible.value = false
+  void router.push({ name: 'diagnosis', params: { id: resumeId } })
 }
 
 function emptyForm(): JdForm {
@@ -153,7 +182,9 @@ onMounted(() => {
         </p>
       </div>
       <div class="head-actions">
-        <el-button v-if="store.items.length" @click="goResumes">去诊断简历</el-button>
+        <el-button v-if="store.items.length" :loading="diagnosisLoading" @click="openDiagnosisPicker">
+          去诊断简历
+        </el-button>
         <el-button type="primary" @click="openCreate">新建岗位</el-button>
       </div>
     </header>
@@ -288,6 +319,25 @@ onMounted(() => {
         <el-button type="primary" :loading="store.saving" @click="save">保存</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="diagnosisDialogVisible" title="选择要诊断的简历" width="480px">
+      <p class="dialog-hint">选择一份简历开始诊断。</p>
+      <div class="resume-options">
+        <button
+          v-for="item in diagnosisResumes"
+          :key="item.id"
+          type="button"
+          class="resume-option"
+          @click="goDiagnosis(item.id)"
+        >
+          <strong>{{ item.original_filename }}</strong>
+          <span>{{ item.text_length }} 字 · {{ formatDate(item.created_at) }}</span>
+        </button>
+      </div>
+      <template #footer>
+        <el-button @click="diagnosisDialogVisible = false">取消</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -395,6 +445,48 @@ onMounted(() => {
   grid-column: 1 / -1;
 }
 
+.dialog-hint {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--app-muted);
+}
+
+.resume-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.resume-option:hover {
+  border-color: var(--app-primary);
+  background: #f8fbff;
+}
+
+.resume-option strong {
+  font-size: 13px;
+  color: var(--app-text);
+}
+
+.resume-option span {
+  flex: none;
+  font-size: 11px;
+  color: var(--app-muted);
+}
+
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -402,13 +494,7 @@ onMounted(() => {
 }
 
 @media (max-width: 720px) {
-  .head-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.page-head {
+  .page-head {
     flex-direction: column;
   }
 
