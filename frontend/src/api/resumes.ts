@@ -1,4 +1,4 @@
-import { http } from '@/api/http'
+import { http, UPLOAD_REQUEST_TIMEOUT_MS } from '@/api/http'
 import type { ResumeDetail, ResumeSummary } from '@/types/resume'
 
 export async function fetchResumes(): Promise<ResumeSummary[]> {
@@ -9,7 +9,9 @@ export async function fetchResumes(): Promise<ResumeSummary[]> {
 export async function uploadResume(file: File): Promise<ResumeDetail> {
   const formData = new FormData()
   formData.append('file', file)
-  const { data } = await http.post<ResumeDetail>('/resumes/upload', formData)
+  const { data } = await http.post<ResumeDetail>('/resumes/upload', formData, {
+    timeout: UPLOAD_REQUEST_TIMEOUT_MS,
+  })
   return data
 }
 

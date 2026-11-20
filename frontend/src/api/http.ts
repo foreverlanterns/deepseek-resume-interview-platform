@@ -2,6 +2,12 @@ import axios, { type AxiosInstance } from 'axios'
 
 import { getToken, notifyUnauthorized } from '@/utils/token'
 
+/** 模型类接口的等待上限，略低于 Nginx 的 180 秒。 */
+export const LONG_REQUEST_TIMEOUT_MS = 170_000
+
+/** 文件上传允许更长的传输时间。 */
+export const UPLOAD_REQUEST_TIMEOUT_MS = 120_000
+
 export interface ApiErrorOptions {
   status?: number | null
   code?: string

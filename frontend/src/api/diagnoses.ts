@@ -1,4 +1,4 @@
-import { http } from '@/api/http'
+import { http, LONG_REQUEST_TIMEOUT_MS } from '@/api/http'
 import type {
   DiagnosisCreatePayload,
   DiagnosisDetail,
@@ -8,7 +8,9 @@ import type {
 export async function createDiagnosis(
   payload: DiagnosisCreatePayload,
 ): Promise<DiagnosisDetail> {
-  const { data } = await http.post<DiagnosisDetail>('/diagnoses', payload)
+  const { data } = await http.post<DiagnosisDetail>('/diagnoses', payload, {
+    timeout: LONG_REQUEST_TIMEOUT_MS,
+  })
   return data
 }
 

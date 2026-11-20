@@ -1,4 +1,4 @@
-import { http } from '@/api/http'
+import { http, LONG_REQUEST_TIMEOUT_MS } from '@/api/http'
 import type {
   ParsedResume,
   ResumeVersionDetail,
@@ -6,7 +6,11 @@ import type {
 } from '@/types/resumeVersion'
 
 export async function parseResume(resumeId: string): Promise<ResumeVersionDetail> {
-  const { data } = await http.post<ResumeVersionDetail>(`/resumes/${resumeId}/parse`)
+  const { data } = await http.post<ResumeVersionDetail>(
+    `/resumes/${resumeId}/parse`,
+    undefined,
+    { timeout: LONG_REQUEST_TIMEOUT_MS },
+  )
   return data
 }
 

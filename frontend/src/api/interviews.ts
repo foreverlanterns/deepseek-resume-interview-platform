@@ -1,4 +1,4 @@
-import { http } from '@/api/http'
+import { http, LONG_REQUEST_TIMEOUT_MS } from '@/api/http'
 import type {
   InterviewCreatePayload,
   InterviewDetail,
@@ -15,7 +15,9 @@ export async function fetchInterviews(resumeId?: string): Promise<InterviewSumma
 export async function createInterview(
   payload: InterviewCreatePayload,
 ): Promise<InterviewDetail> {
-  const { data } = await http.post<InterviewDetail>('/interviews', payload)
+  const { data } = await http.post<InterviewDetail>('/interviews', payload, {
+    timeout: LONG_REQUEST_TIMEOUT_MS,
+  })
   return data
 }
 
@@ -32,6 +34,7 @@ export async function submitAnswer(
   const { data } = await http.post<InterviewDetail>(
     `/interviews/${interviewId}/questions/${questionId}/answer`,
     { answer },
+    { timeout: LONG_REQUEST_TIMEOUT_MS },
   )
   return data
 }
@@ -48,7 +51,10 @@ export async function generateInterviewReport(
   const { data } = await http.post<InterviewDetail>(
     `/interviews/${interviewId}/report`,
     undefined,
-    { params: force ? { force: true } : undefined },
+    {
+      params: force ? { force: true } : undefined,
+      timeout: LONG_REQUEST_TIMEOUT_MS,
+    },
   )
   return data
 }
