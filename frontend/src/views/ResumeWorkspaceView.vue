@@ -6,7 +6,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import FlowGuide from '@/components/FlowGuide.vue'
 import LinesEditor from '@/components/LinesEditor.vue'
 import { fetchResume } from '@/api/resumes'
-import { useJdStore } from '@/stores/jds'
 import { useResumeVersionStore } from '@/stores/resumeVersions'
 import type { ResumeDetail } from '@/types/resume'
 import type {
@@ -22,7 +21,6 @@ import {
 const route = useRoute()
 const router = useRouter()
 const store = useResumeVersionStore()
-const jdStore = useJdStore()
 
 const resume = ref<ResumeDetail | null>(null)
 const form = ref<ParsedResumeForm>(createEmptyParsedResumeForm())
@@ -31,7 +29,6 @@ const pageLoading = ref(false)
 
 const resumeId = computed(() => String(route.params.id))
 const current = computed(() => store.current)
-const hasJd = computed(() => jdStore.items.length > 0)
 
 interface TextDiff {
   prefix: string
@@ -123,7 +120,6 @@ async function load(): Promise<void> {
   pageLoading.value = true
   store.reset()
   try {
-    await jdStore.load().catch(() => {})
     resume.value = await fetchResume(resumeId.value)
     await store.loadVersions(resumeId.value)
     const first = store.versions[0]
@@ -297,23 +293,6 @@ function goJds(): void {
   void router.push({ name: 'jds' })
 }
 
-function goDiagnosis(): void {
-  void router.push({ name: 'diagnosis', params: { id: resumeId.value } })
-}
-
-function startDiagnosis(): void {
-  if (!hasJd.value) {
-    ElMessage.warning('请先填写目标岗位，诊断需要对照岗位要求')
-    goJds()
-    return
-  }
-  goDiagnosis()
-}
-
-function goInterview(): void {
-  void router.push({ name: 'interviews', query: { resume_id: resumeId.value } })
-}
-
 onMounted(() => {
   void load()
 })
@@ -334,13 +313,10 @@ onMounted(() => {
         </div>
       </div>
       <div class="head-actions">
-        <el-button v-if="hasData && !hasJd" type="primary" @click="goJds">
-          填写岗位
-        </el-button>
-        <el-button v-if="hasData" plain @click="startDiagnosis">开始诊断</el-button>
-        <el-button v-if="hasData" plain @click="goInterview">模拟面试</el-button>
+        <el-button v-if="hasData" type="primary" @click="goJds">填写岗位</el-button>
         <el-button
           type="primary"
+          :plain="hasData"
           :loading="store.parsing"
           :disabled="!canParse"
           @click="runParse"
@@ -351,18 +327,6 @@ onMounted(() => {
     </header>
 
     <FlowGuide current="structure" />
-
-    <el-alert
-      v-if="hasData && !hasJd"
-      title="下一步：填写目标岗位"
-      type="info"
-      :closable="false"
-      show-icon
-      class="next-alert"
-    >
-      诊断需要对照岗位的技能、关键词和任职要求。填写后回到这里，就可以开始诊断。
-      <el-button link type="primary" @click="goJds">去填写岗位</el-button>
-    </el-alert>
 
     <el-alert
       v-if="resume && !canParse"
@@ -781,10 +745,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.next-alert {
-  border-radius: 12px;
-}
-
 .diff-preview {
   margin-top: 10px;
   padding: 10px 12px;
@@ -796,6 +756,7 @@ onMounted(() => {
 .diff-head {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   font-size: 12px;
   font-weight: 600;
