@@ -301,6 +301,15 @@ function goDiagnosis(): void {
   void router.push({ name: 'diagnosis', params: { id: resumeId.value } })
 }
 
+function startDiagnosis(): void {
+  if (!hasJd.value) {
+    ElMessage.warning('请先填写目标岗位，诊断需要对照岗位要求')
+    goJds()
+    return
+  }
+  goDiagnosis()
+}
+
 function goInterview(): void {
   void router.push({ name: 'interviews', query: { resume_id: resumeId.value } })
 }
@@ -328,9 +337,7 @@ onMounted(() => {
         <el-button v-if="hasData && !hasJd" type="primary" @click="goJds">
           填写岗位
         </el-button>
-        <el-button v-if="hasData && hasJd" type="primary" plain @click="goDiagnosis">
-          开始诊断
-        </el-button>
+        <el-button v-if="hasData" plain @click="startDiagnosis">开始诊断</el-button>
         <el-button v-if="hasData" plain @click="goInterview">模拟面试</el-button>
         <el-button
           type="primary"
@@ -465,7 +472,6 @@ onMounted(() => {
             <div v-if="summaryDiff" class="diff-preview">
               <div class="diff-head">
                 <span>修改预览</span>
-                <small>保存后恢复统一格式</small>
               </div>
               <p>
                 <span>{{ summaryDiff.prefix }}</span>
@@ -473,7 +479,6 @@ onMounted(() => {
                 <strong v-if="summaryDiff.added">{{ summaryDiff.added }}</strong>
                 <span>{{ summaryDiff.suffix }}</span>
               </p>
-              <small class="diff-note">新增内容加粗显示，方便和原文区分。</small>
             </div>
             <p v-if="form.basic_info.source_text" class="source-text">
               原文：{{ form.basic_info.source_text }}
@@ -791,17 +796,10 @@ onMounted(() => {
 .diff-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
   font-size: 12px;
   font-weight: 600;
   color: #92400e;
-}
-
-.diff-head small {
-  font-size: 11px;
-  font-weight: 400;
-  color: #a16207;
 }
 
 .diff-preview p {
@@ -821,13 +819,6 @@ onMounted(() => {
 
 .diff-preview del {
   color: #94a3b8;
-}
-
-.diff-note {
-  display: block;
-  margin-top: 6px;
-  font-size: 11px;
-  color: #a16207;
 }
 
 .workspace-page {
