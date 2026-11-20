@@ -122,6 +122,8 @@ docker compose --env-file .env.docker up -d --build
 - `docs/测试报告.md`
 - `docs/架构说明.md`
 - `docs/演示脚本.md`
+- `docs/验收清单.md`
+- `docs/验收材料/`
 - `docs/assets/architecture.png`
 
 文档内学生信息、学院和指导教师为待填写项，需按学校模板替换封面。
