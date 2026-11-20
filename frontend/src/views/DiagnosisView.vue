@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
 import DiagnosisRadar from '@/components/DiagnosisRadar.vue'
+import FlowGuide from '@/components/FlowGuide.vue'
 import { fetchResume } from '@/api/resumes'
 import { fetchResumeVersions } from '@/api/resumeVersions'
 import { useDiagnosisStore } from '@/stores/diagnoses'
@@ -154,6 +155,13 @@ function goWorkspace(): void {
   void router.push({ name: 'resume-workspace', params: { id: resumeId.value } })
 }
 
+function goInterview(): void {
+  void router.push({
+    name: 'interviews',
+    query: { resume_id: resumeId.value, jd_id: selectedJd.value },
+  })
+}
+
 function goJds(): void {
   void router.push({ name: 'jds' })
 }
@@ -172,6 +180,8 @@ onMounted(() => {
         <p v-if="resume">{{ resume.original_filename }} · {{ resume.text_length }} 字</p>
       </div>
     </header>
+
+    <FlowGuide current="diagnosis" />
 
     <el-alert
       v-if="!usableVersions.length"
@@ -202,7 +212,7 @@ onMounted(() => {
               v-for="version in usableVersions"
               :key="version.version_no"
               :value="version.version_no"
-              :label="`v${version.version_no} · ${version.status === 'corrected' ? '人工校正' : '模型解析'}`"
+              :label="`v${version.version_no} · ${version.status === 'corrected' ? '人工校正' : 'AI 解析'}`"
             />
           </el-select>
         </label>
@@ -250,22 +260,22 @@ onMounted(() => {
             <div class="score-card">
               <span>格式规范</span>
               <strong :class="scoreLevel(current.format_score)">{{ current.format_score }}</strong>
-              <small>权重 15%</small>
+              <small>占比 15%</small>
             </div>
             <div class="score-card">
               <span>内容完整</span>
               <strong :class="scoreLevel(current.completeness_score)">{{ current.completeness_score }}</strong>
-              <small>权重 20%</small>
+              <small>占比 20%</small>
             </div>
             <div class="score-card">
               <span>关键词</span>
               <strong :class="scoreLevel(current.keyword_score)">{{ current.keyword_score }}</strong>
-              <small>权重 25%</small>
+              <small>占比 25%</small>
             </div>
             <div class="score-card">
               <span>岗位匹配</span>
               <strong :class="scoreLevel(current.jd_match_score)">{{ current.jd_match_score }}</strong>
-              <small>权重 40%</small>
+              <small>占比 40%</small>
             </div>
           </div>
 
@@ -456,6 +466,14 @@ onMounted(() => {
       </el-button>
     </el-empty>
 
+    <el-card v-if="current && selectedJd" class="next-card" shadow="never">
+      <div class="next-copy">
+        <strong>下一步：用这份简历和目标岗位练一场面试</strong>
+        <p>题目会结合简历证据与岗位要求，逐题给出评价和追问。</p>
+      </div>
+      <el-button type="primary" @click="goInterview">开始模拟面试</el-button>
+    </el-card>
+
     <el-card class="history-card" shadow="never">
       <template #header>
         <div class="history-head">
@@ -493,6 +511,31 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.next-card {
+  border-radius: 14px;
+  border-color: var(--app-border);
+}
+
+.next-card :deep(.el-card__body) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.next-copy strong {
+  display: block;
+  font-size: 14px;
+  color: var(--app-text);
+}
+
+.next-copy p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--app-muted);
+}
+
 .diagnosis-page {
   display: flex;
   flex-direction: column;

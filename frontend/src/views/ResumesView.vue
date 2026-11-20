@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, type UploadFile, type UploadInstance } from 'element-plus'
 
+import FlowGuide from '@/components/FlowGuide.vue'
 import { fetchResume } from '@/api/resumes'
 import { useResumeStore } from '@/stores/resumes'
 import type { ResumeDetail, ResumeStatus } from '@/types/resume'
@@ -163,6 +164,8 @@ onMounted(() => {
       <el-button :loading="store.loading" @click="refresh">刷新列表</el-button>
     </header>
 
+    <FlowGuide current="resume" />
+
     <el-card class="upload-card" shadow="never">
       <el-upload
         ref="uploadRef"
@@ -199,6 +202,7 @@ onMounted(() => {
         </el-button>
         <span class="upload-note">暂不支持图片型简历，请上传 PDF 或 Word 文件</span>
       </div>
+      <p class="flow-hint">上传后点击列表中的“结构化”，确认信息后即可开始诊断或模拟面试。</p>
     </el-card>
 
     <el-alert
@@ -272,7 +276,7 @@ onMounted(() => {
             class="detail-alert"
           />
           <pre class="text-preview">{{ detail.text_preview || '未提取到文本内容' }}</pre>
-          <p class="preview-note">仅展示前 800 字；完整内容与字段校正请进入“结构化”。</p>
+          <p class="preview-note">仅展示前 800 字；完整内容与信息校正请进入“结构化”。</p>
         </template>
       </div>
     </el-drawer>
@@ -280,6 +284,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.flow-hint {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--app-muted);
+}
+
 .resumes-page {
   display: flex;
   flex-direction: column;

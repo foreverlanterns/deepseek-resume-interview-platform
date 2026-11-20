@@ -185,6 +185,10 @@ function goList(): void {
   void router.push({ name: 'interviews' })
 }
 
+function goGrowth(): void {
+  void router.push({ name: 'growth' })
+}
+
 function goWorkspace(): void {
   if (!detail.value) return
   void router.push({
@@ -286,7 +290,7 @@ onMounted(() => {
           >
             提交回答并评价
           </el-button>
-          <span class="hint">提交后会调用 DeepSeek 评分，可能需要数秒</span>
+          <span class="hint">提交后需要几秒完成评估</span>
         </div>
       </el-card>
 
@@ -317,6 +321,7 @@ onMounted(() => {
             >
               重新生成报告
             </el-button>
+            <el-button v-if="detail.report" plain @click="goGrowth">查看成长趋势</el-button>
           </div>
         </div>
         <div class="dimension-bars">
@@ -339,7 +344,7 @@ onMounted(() => {
         <template #header>
           <div class="card-head">
             <span>复盘报告</span>
-            <small>{{ detail.prompt_version || '' }}</small>
+            <small>基于本场问答生成</small>
           </div>
         </template>
 

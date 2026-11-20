@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
+import FlowGuide from '@/components/FlowGuide.vue'
 import { fetchResumes } from '@/api/resumes'
 import { fetchResumeVersions } from '@/api/resumeVersions'
 import { useInterviewStore } from '@/stores/interviews'
@@ -10,7 +11,6 @@ import { useJdStore } from '@/stores/jds'
 import type {
   InterviewStatus,
   InterviewType,
-  QuestionSource,
 } from '@/types/interview'
 import type { ResumeSummary } from '@/types/resume'
 import type { ResumeVersionSummary } from '@/types/resumeVersion'
@@ -54,12 +54,6 @@ const STATUS_META: Record<
   completed: { label: '已完成', type: 'success' },
 }
 
-const SOURCE_LABELS: Record<QuestionSource, string> = {
-  resume: '简历',
-  jd: '岗位',
-  behavioral: '行为题',
-}
-
 function statusMeta(status: InterviewStatus): { label: string; type: 'info' | 'warning' | 'success' } {
   return STATUS_META[status] ?? { label: status, type: 'info' }
 }
@@ -89,9 +83,10 @@ async function load(): Promise<void> {
     const [resumeList] = await Promise.all([fetchResumes(), jdStore.load(true)])
     resumes.value = resumeList
     const queryResume = typeof route.query.resume_id === 'string' ? route.query.resume_id : ''
+    const queryJd = typeof route.query.jd_id === 'string' ? route.query.jd_id : ''
     resumeId.value =
       resumeList.find((item) => item.id === queryResume)?.id ?? resumeList[0]?.id ?? ''
-    jdId.value = jdStore.items[0]?.id ?? ''
+    jdId.value = jdStore.items.find((item) => item.id === queryJd)?.id ?? jdStore.items[0]?.id ?? ''
     await loadVersions()
     await store.load()
   } catch (error) {
@@ -151,6 +146,8 @@ onMounted(() => {
       </p>
     </header>
 
+    <FlowGuide current="interview" />
+
     <el-alert
       v-if="!resumes.length"
       title="还没有简历。请先上传并完成结构化解析，再开始模拟面试。"
@@ -181,7 +178,7 @@ onMounted(() => {
       <template #header>
         <div class="card-head">
           <span>新建面试</span>
-          <small>出题与评价会调用 DeepSeek，按实际用量计费</small>
+          <small>生成题目与逐题评价需要几秒，请稍候</small>
         </div>
       </template>
 
@@ -205,7 +202,7 @@ onMounted(() => {
               v-for="version in usableVersions"
               :key="version.version_no"
               :value="version.version_no"
-              :label="`v${version.version_no} · ${version.status === 'corrected' ? '人工校正' : '模型解析'}`"
+              :label="`v${version.version_no} · ${version.status === 'corrected' ? '人工校正' : 'AI 解析'}`"
             />
           </el-select>
         </label>
@@ -252,7 +249,7 @@ onMounted(() => {
       </div>
 
       <p class="control-note">
-        追问不计入主问题数量，最多两级；题目必须标记来源，来源无法核实的题目会降级为通用行为题。
+        每道题都会标注来自简历、岗位还是通用行为题；追问最多两级，不计入主问题数量。
         <el-button v-if="!jdStore.items.length" link type="primary" @click="goJds">
           去创建岗位
         </el-button>
@@ -309,21 +306,21 @@ onMounted(() => {
 
     <el-card class="tips-card" shadow="never">
       <template #header>
-        <div class="card-head"><span>面试评分口径</span></div>
+        <div class="card-head"><span>评分说明</span></div>
       </template>
       <div class="tips-grid">
         <div>
           <strong>五维评价</strong>
-          <p>相关性、专业正确性、结构、证据、表达，各 0—100 分，等权平均为单题得分。</p>
+          <p>相关性、专业正确性、结构、证据、表达五个方面，各 0—100 分，综合成单题得分。</p>
         </div>
         <div>
           <strong>总分</strong>
-          <p>所有已作答题目的算术平均，包含追问；未作答题目不计入。</p>
+          <p>已答题目（含追问）的平均分，未作答不计入。</p>
         </div>
         <div>
           <strong>来源标记</strong>
           <p>
-            每题标记{{ SOURCE_LABELS.resume }}条目、{{ SOURCE_LABELS.jd }}要求或通用行为题，便于核对题目是否有事实依据。
+            每题标注来自简历、岗位还是通用行为题，方便你核对依据。
           </p>
         </div>
         <div>

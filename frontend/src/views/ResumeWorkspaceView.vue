@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+import FlowGuide from '@/components/FlowGuide.vue'
 import LinesEditor from '@/components/LinesEditor.vue'
 import { fetchResume } from '@/api/resumes'
 import { useResumeVersionStore } from '@/stores/resumeVersions'
@@ -36,7 +37,7 @@ const VERSION_STATUS: Record<
   ResumeVersionStatus,
   { label: string; type: 'success' | 'info' | 'danger' }
 > = {
-  parsed: { label: '模型解析', type: 'success' },
+  parsed: { label: 'AI 解析', type: 'success' },
   corrected: { label: '人工校正', type: 'info' },
   failed: { label: '解析失败', type: 'danger' },
 }
@@ -293,14 +294,16 @@ onMounted(() => {
           :disabled="!canParse"
           @click="runParse"
         >
-          {{ store.versions.length ? '重新解析' : '用 DeepSeek 解析' }}
+          {{ store.versions.length ? '重新解析' : '开始 AI 解析' }}
         </el-button>
       </div>
     </header>
 
+    <FlowGuide current="structure" />
+
     <el-alert
       v-if="resume && !canParse"
-      title="当前简历没有可解析文本。请先在简历列表确认文本提取状态；扫描件需要 OCR 支持。"
+      title="当前简历没有可解析文本。请先在简历列表确认文本提取状态；扫描件暂不支持，请上传可复制文字的 PDF 或 Word。"
       type="warning"
       :closable="false"
       show-icon
@@ -351,7 +354,7 @@ onMounted(() => {
             <div>
               <strong>v{{ current?.version_no }}</strong>
               <span class="toolbar-meta">
-{{ current?.status === 'corrected' ? '人工校正' : '模型解析' }}
+{{ current?.status === 'corrected' ? '人工校正' : 'AI 解析' }}
               </span>
             </div>
             <el-button type="primary" :loading="store.saving" @click="saveCorrection">
@@ -361,7 +364,7 @@ onMounted(() => {
 
           <el-alert
             v-if="current?.status === 'corrected'"
-            title="当前版本包含人工校正，原始模型结果仍保留在上一版本中。"
+            title="当前版本包含人工校正，原始识别结果仍保留在上一版本中。"
             type="success"
             :closable="false"
             show-icon

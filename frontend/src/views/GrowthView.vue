@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
+import FlowGuide from '@/components/FlowGuide.vue'
 import TrendLineChart from '@/components/TrendLineChart.vue'
 import { fetchResumes } from '@/api/resumes'
 import { useAnalyticsStore } from '@/stores/analytics'
@@ -206,6 +207,8 @@ onMounted(() => {
         只有同一份简历、同一个岗位的记录才会放在一起比较。
       </p>
     </header>
+
+    <FlowGuide current="growth" />
 
     <el-card class="filter-card" shadow="never">
       <div class="filter-row">

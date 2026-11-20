@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+import FlowGuide from '@/components/FlowGuide.vue'
 import LinesEditor from '@/components/LinesEditor.vue'
 import { useJdStore } from '@/stores/jds'
 import type { JobDescription, JobDescriptionPayload } from '@/types/jd'
@@ -18,9 +20,14 @@ interface JdForm {
 }
 
 const store = useJdStore()
+const router = useRouter()
 const dialogVisible = ref(false)
 const editingId = ref<string | null>(null)
 const form = reactive<JdForm>(emptyForm())
+
+function goResumes(): void {
+  void router.push({ name: 'resumes' })
+}
 
 function emptyForm(): JdForm {
   return {
@@ -145,8 +152,13 @@ onMounted(() => {
           至少填写一项要求，诊断才能运行。
         </p>
       </div>
-      <el-button type="primary" @click="openCreate">新建岗位</el-button>
+      <div class="head-actions">
+        <el-button v-if="store.items.length" @click="goResumes">去诊断简历</el-button>
+        <el-button type="primary" @click="openCreate">新建岗位</el-button>
+      </div>
     </header>
+
+    <FlowGuide current="jd" />
 
     <el-alert
       v-if="store.error"
@@ -286,6 +298,12 @@ onMounted(() => {
   gap: 20px;
 }
 
+.head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .page-head {
   display: flex;
   align-items: flex-start;
@@ -384,7 +402,13 @@ onMounted(() => {
 }
 
 @media (max-width: 720px) {
-  .page-head {
+  .head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.page-head {
     flex-direction: column;
   }
 

@@ -55,7 +55,7 @@ const dimensions: Dimension[] = [
 const steps: Step[] = [
   {
     title: '上传简历',
-    detail: '支持 PDF 与 Word，自动提取文本并整理成教育、工作、项目、技能等字段。',
+    detail: '支持 PDF 与 Word，自动提取文本并整理成教育、工作、项目、技能等信息。',
   },
   {
     title: '选择目标岗位',
